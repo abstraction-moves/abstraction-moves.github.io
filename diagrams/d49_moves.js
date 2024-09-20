@@ -6,7 +6,7 @@ SetVisualForm(s, 'Graph', { pointer_graph: true })
 
 SetVisualForm(Select(buckets), 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
-s = SelectByValue(buckets, (v) => v == null)
+s = SelectByCondition(buckets, (v) => v == null)
 Clump(s)
 
 s = Select(...buckets, { resolve_pointers: false })

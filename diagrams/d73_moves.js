@@ -2,7 +2,7 @@ let s = null
 Display(G)
 
 s = Select(G)
-SetVisualForm(s, 'Graph', { orientation: 'Vertical', vertical_spacing: 10, horizontal_spacing: 100 })
+SetVisualForm(s, 'Graph', { orientation: 'Vertical', vertical_margin: 10, horizontal_margin: 100 })
 
 s = SelectNodes(G)
 Clump(s)

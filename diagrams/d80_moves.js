@@ -13,7 +13,7 @@ s = Select(layout)
 SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 100 })
 
 s = Select(env)
-SetVisualForm(s, 'Graph', { pointer_graph: true, horizontal_spacing: 0 })
+SetVisualForm(s, 'Graph', { pointer_graph: true, horizontal_margin: 0 })
 
 s = Select(table)
 SetVisualForm(s, 'Grid', { padding: [5, 5] })

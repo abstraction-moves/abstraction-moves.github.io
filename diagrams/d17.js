@@ -1,5 +1,5 @@
-let vls = 4
-let n = 4
+let vls = 3
+let n = 3
 
 function get_value(i) {
     return Math.floor(Math.abs(Math.sin(i) * 20))

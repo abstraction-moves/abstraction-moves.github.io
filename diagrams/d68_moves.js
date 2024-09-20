@@ -2,7 +2,7 @@ let s = null
 Display(root)
 
 s = Select(root)
-SetVisualForm(s, 'Tree', { horizontal_spacing: 100 })
+SetVisualForm(s, 'Tree', { horizontal_margin: 100 })
 
 s = SelectNodes(root)
 Clump(s)

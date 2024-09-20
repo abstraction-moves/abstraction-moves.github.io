@@ -16,7 +16,7 @@ Label(s, n2 + '', { placement: 'left', show_braces: false, push_layout: false })
 s = Select(b_result)
 Label(s, result + '', { placement: 'left', show_braces: false, push_layout: false })
 
-s = SelectByValue([b1, b2, b_result], (v) => v == 1)
+s = SelectByCondition([b1, b2, b_result], (v) => v == 1)
 Style(s, {
     background: 'black',
     color: 'white',

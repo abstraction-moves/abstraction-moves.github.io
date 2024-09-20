@@ -15,17 +15,17 @@ s = Select(a_bin, b_bin, d_bin)
 SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 0 })
 
 s = Select(a_bin)
-s = PartitionSelection(s, n / 4)
+s = PartitionSelection(s, n / 2)
 Clump(s, { scale: 0.2 })
 Label(s, 'a')
 
 s = Select(b_bin)
-s = PartitionSelection(s, n / 4)
+s = PartitionSelection(s, n / 2)
 Clump(s, { scale: 0.2 })
 Label(s, 'b')
 
 s = Select(d_bin)
-s = PartitionSelection(s, n / 4)
+s = PartitionSelection(s, n / 2)
 Clump(s, { scale: 0.2 })
 Label(s, 'd')
 

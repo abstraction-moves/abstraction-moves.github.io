@@ -4,7 +4,7 @@ Display(Var('boolean'))
 s = Select(boolean)
 SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
-s = SelectByValue(boolean, (v) => v == null)
+s = SelectByCondition(boolean, (v) => v == null)
 Hide(s)
 Style(s, {
     background: 'lightgrey',

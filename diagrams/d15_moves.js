@@ -16,13 +16,13 @@ SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = SpanSelection(Select(...A.slice(0, i)))
 Clump(s)
-Clump(InverseSelection(s))
+Clump(InvertSelection(s))
 Style(s, { background: 'bisque' })
 Label(s, 'ai', { placement: 'right', push_layout: false, show_braces: false })
 
 s = SpanSelection(Select(...B.slice(0, j)))
 Clump(s)
-Clump(InverseSelection(s))
+Clump(InvertSelection(s))
 Style(s, { background: 'bisque' })
 Label(s, 'bi', { placement: 'right', push_layout: false, show_braces: false })
 

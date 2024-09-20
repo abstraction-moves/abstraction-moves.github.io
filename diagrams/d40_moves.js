@@ -10,7 +10,7 @@ SetVisualForm(Select(...M), 'Sequence', { style: 'Blocks' })
 s = Select(M[n], { resolve_pointers: false })
 Label(s, 'IP', { placement: 'left' })
 
-s = InverseSelection(s)
+s = InvertSelection(s)
 Clump(s)
 
 s = Select(...args)

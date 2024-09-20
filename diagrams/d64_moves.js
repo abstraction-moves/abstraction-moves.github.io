@@ -8,7 +8,7 @@ s = SelectNodes(tree)
 Clump(s)
 Style(s, { background: '#fee4b3' })
 
-s = SelectByValue(tree, (v) => v == null)
+s = SelectByCondition(tree, (v) => v == null)
 Label(s, 'NIL')
 Style(s, { background: 'white', border: 'none' })
 

@@ -20,7 +20,7 @@ s = Select(B2)
 SetVisualForm(s, 'Grid', { style: 'Bordered' })
 Hide(s)
 
-s = SelectByValue(B2, (v) => v == 1)
+s = SelectByCondition(B2, (v) => v == 1)
 Label(s, 'X')
 
 s = Select(B2)

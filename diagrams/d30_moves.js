@@ -24,7 +24,7 @@ s = Select(memory.slice(0, n2 + Math.floor(window_size / 2)))
 s = SpanSelection(s)
 Label(s, 'Program', { placement: 'right' })
 
-s = InverseSelection(s)
+s = InvertSelection(s)
 Label(s, 'Code', { placement: 'right' })
 
 s = Select(memory[IP])

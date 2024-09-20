@@ -1,5 +1,5 @@
-let n = 4
-let m = 6
+let n = 3
+let m = 3
 
 let B = [...Array(m * n)].map((_) => Math.floor(Math.random() * 2))
 

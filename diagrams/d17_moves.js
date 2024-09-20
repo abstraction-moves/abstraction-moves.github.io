@@ -2,7 +2,7 @@ let s = null
 Display(sdma_vl_map)
 
 s = Select(sdma_vl_map)
-SetVisualForm(s, 'Graph', { pointer_graph: true, vertical_spacing: 80 })
+SetVisualForm(s, 'Graph', { pointer_graph: true, vertical_margin: 80 })
 
 s = Select(sdma_vl_map)
 SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })

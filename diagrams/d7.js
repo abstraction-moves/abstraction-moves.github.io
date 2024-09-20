@@ -1,7 +1,7 @@
 // Note: We use 16 bit division as an illustrative case.
 
 // Number of bits
-let n = 16 // Must be a multiple of 8
+let n = 8 // Must be a multiple of 8
 
 let a = Math.floor(Math.random() * 2 ** 8)
 let b = Math.floor(Math.random() * 2 ** 6)

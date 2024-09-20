@@ -6,7 +6,7 @@ SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 let cutoff = 6
 
-s = SelectByValue(L, (v) => v == null)
+s = SelectByCondition(L, (v) => v == null)
 Clump(s)
 
 s = Select(...L)

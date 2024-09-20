@@ -18,7 +18,7 @@ SetVisualForm(s, 'Hierarchy')
 s = Select(chunk.code, new_code)
 SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
-s = SelectByValue(new_code, (v) => v == null)
+s = SelectByCondition(new_code, (v) => v == null)
 s = SpanSelection(s)
 Clump(s)
 

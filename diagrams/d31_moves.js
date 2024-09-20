@@ -2,7 +2,7 @@ let s = null
 Display(Var('G'))
 
 s = Select(G)
-SetVisualForm(s, 'Graph', { orientation: 'Vertical', vertical_spacing: 80, horizontal_spacing: 80 })
+SetVisualForm(s, 'Graph', { orientation: 'Vertical', vertical_margin: 80, horizontal_margin: 80 })
 
 s = Select(...G.vertices)
 

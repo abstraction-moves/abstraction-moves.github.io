@@ -1,4 +1,4 @@
-let n = 8
+let n = 6
 let A = [...new Array(n)].map((_, i) => get_value(i * 2 - 1))
 let B = [...new Array(n)].map((_, i) => get_value(i * 2))
 

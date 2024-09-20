@@ -15,7 +15,7 @@ s = Select(...names)
 s2 = Select(...booleans)
 Connect(s, s2)
 
-s = SelectByValue(booleans, (v) => v == true)
+s = SelectByCondition(booleans, (v) => v == true)
 s2 = Select(...filtered_names)
 
 Connect(s, s2)

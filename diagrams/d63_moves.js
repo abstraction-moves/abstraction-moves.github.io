@@ -23,7 +23,8 @@ Display(layout)
 s = Select(layout)
 SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
 
-SetVisualForm(s, 'Tree', { trim_leaves: true, horizontal_spacing: 25 })
+s = Select(right_tree)
+SetVisualForm(s, 'Tree', { trim_leaves: true, horizontal_margin: 25 })
 SetVisualForm(Select(list), 'Sequence', { style: 'Blocks' })
 
 s = SelectNodes(right_tree)

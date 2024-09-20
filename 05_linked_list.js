@@ -81,9 +81,6 @@ class LinkedList {
         let count = 0
 
         while (current) {
-            if (count == index) {
-                console.log(current.data)
-            }
             count++
             current = current.next
         }
@@ -128,7 +125,6 @@ class LinkedList {
         let current = this.head
 
         while (current) {
-            console.log(current.data)
             current = current.next
         }
     }

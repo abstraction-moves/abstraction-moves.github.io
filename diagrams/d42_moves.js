@@ -26,7 +26,7 @@ s2 = Select(G.vertices[6], G.vertices[10])
 Connect(s, s2, { directed: false })
 Remove(s2)
 
-s = SelectByValue(M, (v) => v == 1)
+s = SelectByCondition(M, (v) => v == 1)
 s = SpanSelection(s)
 EncircleBackground(s)
 Remove(s)

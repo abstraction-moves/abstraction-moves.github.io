@@ -690,9 +690,8 @@
 .cell-lhs {
     display: flex;
     flex-direction: column;
-
-    max-width: 600px;
-    min-width: 600px;
+    max-width: 630px;
+    min-width: 630px;
 
     border-right: 1px solid rgba(0, 0, 0, 0.349);
 }
@@ -766,7 +765,7 @@
 
 .cell-code-toggle {
     position: absolute;
-    left: -185px;
+    left: -210px;
     top: 5px;
     flex-direction: column;
     display: flex;
@@ -868,6 +867,10 @@ p {
     margin-left: 20px;
     border-left: 1px solid #00000054;
     padding-left: 20px;
+
+    margin-right: 20px;
+    border-right: 1px solid #00000054;
+    padding-right: 20px;
   }
 .page-switch-container {
     margin-left: 10px;
@@ -1098,7 +1101,12 @@ code {
 }
 hr {
     opacity: 0.2;
-    margin: 40px 0px;
+    /* margin: 40px 0px; */
+
+    margin: 100px 0px;
+}
+.hr-diagram {
+    margin-top: 140px;
 }
 h2 {
     font-weight: 400;

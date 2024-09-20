@@ -4,7 +4,7 @@ Display(Var('A'))
 s = Select(A)
 SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
-s = SelectByValue(A, (v) => v == 1)
+s = SelectByCondition(A, (v) => v == 1)
 Style(s, {
     background: 'black',
     color: 'white',

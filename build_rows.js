@@ -17,4 +17,3 @@ dataset = build_rows(
     [...Array(500).keys()].map((i) => `label_${i + 1}`)
 )
 /* CELL BREAK */
-console.log(dataset)

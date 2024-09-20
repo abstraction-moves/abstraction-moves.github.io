@@ -24,7 +24,7 @@ s = Select(...L2)
 SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(L2[k], { resolve_pointers: false })
-s = InverseSelection(s)
+s = InvertSelection(s)
 Clump(s)
 
 s = Select(...L2[k])

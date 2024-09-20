@@ -9,7 +9,7 @@ Clump(s)
 
 LabelLocation(s, { placement: 'top', show_braces: false })
 
-s = SelectByValue(S3, (v) => v != null)
+s = SelectByCondition(S3, (v) => v != null)
 Label(s, 'x')
 
 s = Select(S3[N])

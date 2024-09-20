@@ -9,5 +9,5 @@ Clump(s)
 
 Label(s, (d) => d.kind)
 
-s = SelectByValue(dom, (v) => v.dirty == true)
+s = SelectByCondition(dom, (v) => v.dirty == true)
 Label(s, '*', { placement: 'right', show_braces: false })

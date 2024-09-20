@@ -55684,7 +55684,7 @@ function create_tree(_data, _nodes, options = {}) {
   get_flat_tree_nodes_and_depth(_nodes).forEach(([n, depth2]) => {
     assert(!("is_chunk" in n));
     if (n.node != null) {
-      n.container = create_container(n.node, options.padding_between_nodes ?? [10, 5]);
+      n.container = create_container(n.node, options.padding ?? [10, 5]);
       n.node.el.classList.add("d-tree-node-value");
     }
     n.depth = depth2;
@@ -55703,9 +55703,9 @@ function create_tree(_data, _nodes, options = {}) {
     data: _data,
     nodes: _nodes,
     centered: options.centered ?? true,
-    padding_between_nodes: options.padding_between_nodes ?? [10, 5],
-    vertical_spacing: options.vertical_spacing ?? 10,
-    horizontal_spacing: options.horizontal_spacing ?? 20,
+    padding: options.padding ?? [10, 5],
+    vertical_margin: options.vertical_margin ?? 10,
+    horizontal_margin: options.horizontal_margin ?? 20,
     orientation: options.orientation ?? "Horizontal",
     indented: options.indented ?? false,
     directed: options.directed ?? true,
@@ -55723,7 +55723,7 @@ function create_tree(_data, _nodes, options = {}) {
     get_flat_tree_nodes_and_depth(diagram2.nodes).forEach(([n, depth2]) => {
       n.depth = depth2;
     });
-    let { left: left2, top: top2, width, height, vertical_spacing, horizontal_spacing, orientation, centered, nodes, indented } = diagram2;
+    let { left: left2, top: top2, width, height, vertical_margin, horizontal_margin, orientation, centered, nodes, indented } = diagram2;
     const constraints = [];
     if (nodes.children.length == 0) {
       if (nodes.node != null) {
@@ -55751,7 +55751,7 @@ function create_tree(_data, _nodes, options = {}) {
             const di_left_node = get_tree_node_transform(d_nodes[i2 - 1]);
             constraints.push(
               add_constraint(
-                ge(di_node.left, add$1(di_left_node.left, di_left_node.width, horizontal_spacing))
+                ge(di_node.left, add$1(di_left_node.left, di_left_node.width, horizontal_margin))
               )
             );
           }
@@ -55763,7 +55763,7 @@ function create_tree(_data, _nodes, options = {}) {
                 add_constraint(
                   ge(
                     di_node.top,
-                    add$1((di_above_node == null ? void 0 : di_above_node.top) ?? top2, (di_above_node == null ? void 0 : di_above_node.height) ?? 0, vertical_spacing)
+                    add$1((di_above_node == null ? void 0 : di_above_node.top) ?? top2, (di_above_node == null ? void 0 : di_above_node.height) ?? 0, vertical_margin)
                   )
                 )
               );
@@ -55796,7 +55796,7 @@ function create_tree(_data, _nodes, options = {}) {
             if (di_above_node != null)
               constraints.push(
                 add_constraint(
-                  ge(di_node.top, add$1(di_above_node.top, di_above_node.height, vertical_spacing))
+                  ge(di_node.top, add$1(di_above_node.top, di_above_node.height, vertical_margin))
                 )
               );
           }
@@ -55808,7 +55808,7 @@ function create_tree(_data, _nodes, options = {}) {
                 add_constraint(
                   ge(
                     di_node.left,
-                    add$1((di_left_node == null ? void 0 : di_left_node.left) ?? left2, (di_left_node == null ? void 0 : di_left_node.width) ?? 0, horizontal_spacing)
+                    add$1((di_left_node == null ? void 0 : di_left_node.left) ?? left2, (di_left_node == null ? void 0 : di_left_node.width) ?? 0, horizontal_margin)
                   )
                 )
               );
@@ -55845,7 +55845,7 @@ function create_tree(_data, _nodes, options = {}) {
             add_constraint(
               ge(
                 first_transform.top,
-                add$1((parent_transform == null ? void 0 : parent_transform.top) ?? top2, (parent_transform == null ? void 0 : parent_transform.height) ?? 0, vertical_spacing)
+                add$1((parent_transform == null ? void 0 : parent_transform.top) ?? top2, (parent_transform == null ? void 0 : parent_transform.height) ?? 0, vertical_margin)
               )
             )
           );
@@ -55861,7 +55861,7 @@ function create_tree(_data, _nodes, options = {}) {
           let prev_last_child = get_tree_node_transform(get_last_child_tree_node(parent.children[ci - 1]));
           if (curr == null) continue;
           constraints.push(
-            add_constraint(ge(curr.top, add$1(prev_last_child.top, prev_last_child.height, vertical_spacing)))
+            add_constraint(ge(curr.top, add$1(prev_last_child.top, prev_last_child.height, vertical_margin)))
           );
         }
         parent.children.forEach((c) => {
@@ -55872,7 +55872,7 @@ function create_tree(_data, _nodes, options = {}) {
               add_constraint(
                 eq(
                   c_node.left,
-                  add$1((parent_transform == null ? void 0 : parent_transform.left) ?? left2, parent_transform ? horizontal_spacing : 0)
+                  add$1((parent_transform == null ? void 0 : parent_transform.left) ?? left2, parent_transform ? horizontal_margin : 0)
                 )
               )
             );
@@ -55913,8 +55913,8 @@ function create_tree(_data, _nodes, options = {}) {
       top: top2,
       width,
       height,
-      vertical_spacing,
-      horizontal_spacing,
+      vertical_margin,
+      horizontal_margin,
       orientation,
       centered,
       nodes,
@@ -56740,8 +56740,8 @@ function create_indented_hierarchy(_data, _nodes, options = {}) {
       centered: false,
       orientation: "Vertical",
       indented: true,
-      horizontal_spacing: options.horizontal_spacing ?? 30,
-      padding_between_nodes: options.padding_between_nodes ?? [0, 0]
+      horizontal_margin: options.horizontal_margin ?? 30,
+      padding: options.padding ?? [0, 0]
     }),
     type: "IndentedHierarchy"
   };
@@ -56788,9 +56788,9 @@ function create_bordered_indented_hierarchy(_data, _nodes, options = {}) {
   const diagram = create_indented_hierarchy(_data, _nodes, {
     ...options,
     orientation: "Horizontal",
-    horizontal_spacing: options.horizontal_spacing ?? 30,
-    padding_between_nodes: options.padding_between_nodes ?? [0, 0],
-    vertical_spacing: options.vertical_spacing
+    horizontal_margin: options.horizontal_margin ?? 30,
+    padding: options.padding ?? [0, 0],
+    vertical_margin: options.vertical_margin
   });
   diagram.el.classList.add("d-bordered-indented-hierarchy");
   const default_update = diagram.update;
@@ -56813,10 +56813,10 @@ function create_bordered_indented_hierarchy(_data, _nodes, options = {}) {
 function create_tree_hierarchy(_data, _nodes, options = {}) {
   const diagram = {
     ...create_tree(_data, _nodes, {
-      horizontal_spacing: 50,
-      vertical_spacing: 30,
+      horizontal_margin: 50,
+      vertical_margin: 30,
       orientation: options.orientation ?? "Horizontal",
-      padding_between_nodes: [10, 10]
+      padding: [10, 10]
     }),
     type: "TreeHierarchy"
   };
@@ -56856,10 +56856,10 @@ function create_tree_graph(_data, _nodes, _options = {}) {
   const diagram = {
     ...create_tree(_data, _nodes, {
       ..._options,
-      horizontal_spacing: _options.horizontal_spacing ?? 50,
-      vertical_spacing: _options.vertical_spacing ?? 50,
+      horizontal_margin: _options.horizontal_margin ?? 50,
+      vertical_margin: _options.vertical_margin ?? 50,
       orientation: _options.orientation ?? "Horizontal",
-      padding_between_nodes: [10, 10]
+      padding: [10, 10]
     }),
     type: "TreeGraph"
   };
@@ -56899,10 +56899,10 @@ function create_pointer_tree(_data, _nodes, options = {}) {
   const diagram = {
     ...create_tree(_data, _nodes, {
       ...options,
-      horizontal_spacing: options.horizontal_spacing ?? 50,
-      vertical_spacing: options.vertical_spacing ?? 30,
+      horizontal_margin: options.horizontal_margin ?? 50,
+      vertical_margin: options.vertical_margin ?? 30,
       orientation: options.orientation ?? "Vertical",
-      padding_between_nodes: options.padding_between_nodes ?? [5, 0],
+      padding: options.padding ?? [5, 0],
       directed: options.directed ?? true
     }),
     type: "PointerTree"
@@ -56943,12 +56943,12 @@ function create_pointer_tree(_data, _nodes, options = {}) {
 function create_binary_tree(_data, _nodes, options = {}) {
   const diagram = {
     ...create_tree(_data, _nodes, {
-      horizontal_spacing: options.horizontal_spacing ?? 40,
-      vertical_spacing: options.vertical_spacing ?? 50,
+      horizontal_margin: options.horizontal_margin ?? 40,
+      vertical_margin: options.vertical_margin ?? 50,
       directed: options.directed ?? false,
       centered: options.centered ?? (options.indented ? false : true),
       orientation: options.orientation,
-      padding_between_nodes: options.padding_between_nodes,
+      padding: options.padding,
       indented: options.indented ?? false
     }),
     type: "BinaryTree"
@@ -57229,7 +57229,6 @@ function create_label(_selection, _text, _options, root) {
   if (_options.align != null) {
     label_el.classList.add("d-align-" + _options.align);
   }
-  console.log("text", _text);
   const diagram = {
     ...create_diagram("d-location-range", {
       get_constraints: (d) => get_constraints(d, root),
@@ -57681,10 +57680,10 @@ function create_label(_selection, _text, _options, root) {
   return diagram;
 }
 const SELECTION_COLORS = [
-  // 'rgba(113, 37, 255, 0.2)',
+  "rgba(113, 37, 255, 0.2)",
   "rgba(255, 98, 37, 0.2)",
-  "rgba(37, 92, 255, 0.2)"
-  // 'rgba(80, 155, 88, 0.2)',
+  "rgba(37, 92, 255, 0.2)",
+  "rgba(80, 155, 88, 0.2)"
 ];
 let __SELECTION_COLOR_INDEX = { counter: 0 };
 function get_selection_color() {
@@ -59119,9 +59118,9 @@ function search_in_data_for_value(data2, condition, ignore_this = false) {
   }
   return satisfies;
 }
-function SelectByValue(data2, condition) {
+function SelectByCondition(data2, condition) {
   if (data2.kind != "Data") {
-    throw new Error(`[SelectByValue] Invalid input data: ${data2.kind}`);
+    throw new Error(`[SelectByCondition] Invalid input data: ${data2.kind}`);
   }
   if (condition == null) {
     return DataSelect(data2);
@@ -59141,7 +59140,7 @@ function get_appropriate_data_from_diagram(diagram) {
   }
   throw new Error(`Cannot find appropriate data for diagram: ${diagram.type}`);
 }
-function InverseSelection(selection) {
+function InvertSelection(selection) {
   const selections = selection.get_selected_diagrams(selection);
   const ancestors = get_common_ancestor(selections, Root());
   const inverse_selections = [];
@@ -59203,24 +59202,6 @@ function SetVisualForm(selection, _structure, _options = {}) {
       });
       Replace(diagram, new_diagram);
     }
-  }
-}
-function RangeSelect(data2, _options = {}) {
-  if (data2.kind != "Data") {
-    throw new Error(`[DataSelect] Invalid input data: ${data2.kind}`);
-  }
-  let options = resolve_options(_options);
-  if (data2.type == "Pointer" && options.resolve_pointers != false) {
-    const resolved = resolve_pointer_from_id(data2.__value);
-    assert(resolved != null && resolved.kind == "Data");
-    return RangeSelect(resolved, _options);
-  }
-  if (data2.type == "Array") {
-    const union = UnionSelect(data2.__value.map((v) => DataSelect(v, { ...options, individual: true })));
-    const merged = SpanSelection(union);
-    return merged;
-  } else {
-    return DataSelect(data2, _options);
   }
 }
 function UnionSelect(selections) {
@@ -59376,7 +59357,7 @@ function Style(thing, _properties = {}) {
   }
 }
 function Fragment(selection) {
-  const inverse = InverseSelection(selection);
+  const inverse = InvertSelection(selection);
   Clump(inverse, { __collapse: true, __fragment: true });
 }
 function SpanSelection(selection) {
@@ -61622,7 +61603,6 @@ function add_constraint(c, aggregator = []) {
   try {
     State$1.solver.addConstraint(c);
   } catch (e2) {
-    console.warn("Unsatisfiable constraint.", c);
   }
   return c;
 }
@@ -61705,7 +61685,6 @@ function get_common_ancestor(diagrams, root) {
         current_ancestor_children.push(remaining);
         to_remove_ids.push(remaining.id);
       } else {
-        console.log("Not a direct path...", remaining_parent);
       }
     }
     to_remove_ids.forEach((id2) => {
@@ -62812,7 +62791,6 @@ function update_diagram(diagram) {
       try {
         State$1.solver.addConstraint(c.constraint);
       } catch (e2) {
-        console.warn("Unable to add post-constraint", c.constraint);
       }
     });
   }
@@ -88886,7 +88864,7 @@ function create_cell(code2, move_code, parent) {
   const toggle_code = create_el("div", "cell-code-toggle-code", code_toggle_container);
   const toggle_diagram = create_el("div", "cell-code-toggle-diagram", code_toggle_container);
   toggle_code.innerText = "Source Code";
-  toggle_diagram.innerText = "Diagram Code";
+  toggle_diagram.innerText = "Abstraction Moves";
   toggle_code.classList.add("active");
   toggle_diagram.addEventListener("click", () => {
     if (toggle_diagram.classList.contains("active")) {
@@ -88941,10 +88919,15 @@ function create_cell(code2, move_code, parent) {
   });
   return cell;
 }
-async function run_cell(cell) {
+async function run_cell(cell, cached_diagram = null) {
   State$1.container = cell.diagram_view;
   cell.error_el.innerText = "";
   cell.diagram_view.innerHTML = "";
+  if (cached_diagram != null) {
+    cell.diagram_view.innerHTML = cached_diagram;
+    cell.error_el.innerText = `Loaded from cache.`;
+    return;
+  }
   const svg2 = create_svg_element("diagram-svg", cell.diagram_view);
   const svg_top = create_svg_element("diagram-svg-top", cell.diagram_view);
   State$1.solver = new Solver();
@@ -88954,9 +88937,14 @@ async function run_cell(cell) {
   const diagram_code = cell.diagram_editor.state.doc.toString();
   let diagram_state;
   let diagram_root;
-  const ret = execute_diagram_moves(user_code, diagram_code);
-  diagram_state = ret.diagram_state;
-  diagram_root = ret.diagram_root;
+  try {
+    const ret = execute_diagram_moves(user_code, diagram_code);
+    diagram_state = ret.diagram_state;
+    diagram_root = ret.diagram_root;
+  } catch (error) {
+    cell.error_el.innerText = getErrorMessage(error);
+    return;
+  }
   cell.diagram_state = diagram_state;
   cell.diagram_root = diagram_root;
   cell.diagram_inspector.innerHTML = "";
@@ -88996,37 +88984,32 @@ const SAMPLE_MOVE_FILES = [
   "./06_graph_moves.js"
 ];
 const SELECTED_FILE = 0;
-const debug_toggle = document.querySelector("#checkbox-debug-view");
-const loading_status = document.querySelector(".loading-status");
+let CURR = 1;
+let PAGES_PER = 80;
+let TOTAL = 80;
+let USE_CACHE = true;
+const all_diagrams = document.querySelector(".all-diagrams");
 async function main() {
   State$1.solver = new Solver();
-  debug_toggle.checked = false;
-  debug_toggle.addEventListener("input", (e2) => {
-    if (debug_toggle.checked) {
-      document.querySelectorAll(".diagram-inspector").forEach((el) => el.classList.add("is-visible"));
-    } else {
-      document.querySelectorAll(".diagram-inspector").forEach((el) => el.classList.remove("is-visible"));
-    }
-  });
   update_diagrams();
 }
 async function update_diagrams() {
-  loading_status.innerHTML = `Loading... 0/80`;
-  for (let i2 = 1; i2 <= 80; i2++) {
+  all_diagrams.innerHTML = "";
+  const cache_raw = await (await fetch("cache.json")).json();
+  create_el("hr", [], all_diagrams);
+  for (let i2 = CURR; i2 < CURR + PAGES_PER; i2++) {
     const code_file = `./diagrams/d${i2}.js`;
     const move_file = `./diagrams/d${i2}_moves.js`;
-    const section = create_el("section", [], document.querySelector("main"));
+    const section = create_el("section", [], all_diagrams);
     const h2 = create_el("p", [], section);
     h2.innerHTML = `[D${i2}]`;
     const revis = create_el("revis", [], section);
     const code_raw = await (await fetch(code_file)).text();
     const moves_raw = await (await fetch(move_file)).text();
     const cell = create_cell(code_raw, moves_raw, revis);
-    run_cell(cell);
-    create_el("hr", [], section);
-    loading_status.innerHTML = `Loading... ${i2}/80`;
+    run_cell(cell, USE_CACHE ? cache_raw[`d${i2}`] : null);
+    create_el("hr", ["hr-diagram"], section);
   }
-  loading_status.innerHTML = `All diagrams loaded.`;
 }
 main();
 async function init_cell(id2, code_file, move_file) {

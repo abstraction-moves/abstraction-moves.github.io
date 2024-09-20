@@ -6,7 +6,7 @@ s = Select(layout)
 SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical', margin: 100 })
 
 s = Select(tree)
-SetVisualForm(s, 'Tree', { horizontal_spacing: 0, show_labels: false })
+SetVisualForm(s, 'Tree', { horizontal_margin: 0, show_labels: false })
 
 s = Select(L)
 SetVisualForm(s, 'Sequence', { style: 'Blocks' })
