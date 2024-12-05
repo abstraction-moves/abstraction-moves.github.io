@@ -2,9 +2,9 @@ let s = null
 Display(Var('buckets'))
 
 s = Select(buckets)
-SetVisualForm(s, 'Graph', { pointer_graph: true })
+Revisualize(s, 'Graph', { pointer_graph: true })
 
-SetVisualForm(Select(buckets), 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+Revisualize(Select(buckets), 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = SelectByCondition(buckets, (v) => v == null)
 Clump(s)

@@ -4,10 +4,10 @@ let layout = [physical_address, virtual_address]
 Display(layout)
 
 s = Select(layout)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
+Revisualize(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(physical_address, virtual_address)
-SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(physical_address.slice(0, mem_size))
 s2 = Select(virtual_address.slice(mem_start, mem_start + mem_size))

@@ -2,7 +2,7 @@ let s = null
 Display(Var('word_1'))
 
 s = Select(word_1)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(...word_1)
 s = SpanSelection(s)
@@ -23,8 +23,8 @@ let format = word_1.slice(8 * 3)
 Display(Var('format'))
 
 let s2 = Select(format)
-SetVisualForm(s2, 'Sequence', { style: 'Blocks' })
-Remove(s2)
+Revisualize(s2, 'Sequence', { style: 'Blocks' })
+Clear(s2)
 
 Connect(s[3], Select(format))
 
@@ -49,4 +49,4 @@ Label(s, 'B')
 s = Select(format[7], { within: Var('format') })
 Label(s, 'M')
 
-Remove(s)
+Clear(s)

@@ -2,7 +2,7 @@ let s = null
 Display(Var('boolean'))
 
 s = Select(boolean)
-SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = SelectByCondition(boolean, (v) => v == null)
 Hide(s)

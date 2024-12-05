@@ -3,9 +3,9 @@ let layout = [b1, b2, b_result]
 Display(layout)
 
 s = Select(layout)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
+Revisualize(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
 
-SetVisualForm(Select(b1, b2, b_result), 'Sequence', { style: 'Blocks' })
+Revisualize(Select(b1, b2, b_result), 'Sequence', { style: 'Blocks' })
 
 s = Select(b1)
 Label(s, n1 + '', { placement: 'left', show_braces: false, push_layout: false })
@@ -35,4 +35,4 @@ s = Select(b1[7])
 s2 = Select(b_result[7])
 Connect(s, s2)
 
-Remove(s)
+Clear(s)

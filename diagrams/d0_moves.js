@@ -1,21 +1,11 @@
-Display(Var('L'))
+Display(d)
 
-let s = Select(L)
-SetVisualForm(s, 'Sequence', {
-    style: 'Blocks',
-})
+let s = Select(d)
+Revisualize(s, 'Grid')
 
-let m = 4
+// let c1 = d.filter((d) => d.size == 'small')
+// s = Select(c1)
+// s = SpanSelection(s)
+// Clump(s)
 
-s = PartitionSelection(s, m)
-Clump(s)
-
-LabelLocation(s, {
-    coordinates: L,
-    // range: [0, Var('n')],
-    // remap_range: true
-})
-
-for (let i = 0; i < m - 1; i++) {
-    Connect(s[i], s[i + 1])
-}
+s = SelectCol(d, 0)

@@ -2,7 +2,7 @@ let s = null
 Display(T)
 
 s = Select(T)
-SetVisualForm(s, 'Tree', { trim_leaves: true })
+Revisualize(s, 'Tree', { trim_leaves: true })
 
 s = SelectNodes(T)
 Clump(s)

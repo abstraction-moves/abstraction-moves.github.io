@@ -3,10 +3,10 @@ Display(Var('nodes'))
 Display(Var('T'))
 
 s = Select(nodes)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
+Revisualize(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(T)
-SetVisualForm(s, 'Tree')
+Revisualize(s, 'Tree')
 
 s = Select(...nodes)
 LabelLocation(s, { coordinates: nodes, show_braces: false })
@@ -19,10 +19,10 @@ Style(s, { background: '#ffbbf4' })
 
 s = SelectSubtree(T.right.right)
 s = SpanSelection(s)
-EncircleBackground(s)
+Encircle(s)
 
 s = SelectSubtree(T.right.left)
 s = SpanSelection(s)
-EncircleBackground(s)
+Encircle(s)
 
-Remove(s)
+Clear(s)

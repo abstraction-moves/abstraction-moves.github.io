@@ -8,7 +8,7 @@ let s = null
 Display(grid)
 
 s = Select(grid)
-SetVisualForm(s, 'Grid', { style: 'Bordered' })
+Revisualize(s, 'Grid', { style: 'Bordered' })
 
 s = Select(grid[0], grid[1])
 s = SpanSelection(s)

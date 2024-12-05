@@ -6,13 +6,13 @@ let s2 = null
 Display(mergedAB)
 
 s = Select(mergedAB)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 100 })
+Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 100 })
 
 s = Select(AB)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical', alignment: 'Start' })
+Revisualize(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical', alignment: 'Start' })
 
 s = Select(A, B, merged)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
 s = SpanSelection(Select(...A.slice(0, i)))
 Clump(s)
@@ -38,5 +38,5 @@ s2 = Select(B)
 Connect(s2, s)
 Label(s2, 'B', { placement: 'right', show_braces: false })
 
-Remove(s)
-Remove(s2)
+Clear(s)
+Clear(s2)

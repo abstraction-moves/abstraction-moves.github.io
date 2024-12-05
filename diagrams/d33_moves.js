@@ -3,13 +3,13 @@ let AB = [A, B]
 Display(AB)
 
 s = Select(AB)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
+Revisualize(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
 
-SetVisualForm(Select(A, B), 'Sequence', { style: 'Blocks' })
+Revisualize(Select(A, B), 'Sequence', { style: 'Blocks' })
 
 Display(C)
 s = Select(C)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(C.slice(0, -1))
 Hide(s)

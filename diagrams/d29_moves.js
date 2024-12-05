@@ -7,16 +7,16 @@ let s = null
 Display(layout)
 
 s = Select(layout)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
+Revisualize(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(chunk)
-SetVisualForm(s, 'Graph', { pointer_graph: true })
+Revisualize(s, 'Graph', { pointer_graph: true })
 
 s = Select(chunk)
-SetVisualForm(s, 'Hierarchy')
+Revisualize(s, 'Hierarchy')
 
 s = Select(chunk.code, new_code)
-SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = SelectByCondition(new_code, (v) => v == null)
 s = SpanSelection(s)

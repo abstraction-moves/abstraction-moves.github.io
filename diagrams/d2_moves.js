@@ -4,10 +4,10 @@ let flat = machines.map((machine) => machine.map((m) => m.time))
 Display(flat)
 
 s = Select(flat)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
+Revisualize(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(...flat)
-SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical', direction: 'Reverse' })
+Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical', direction: 'Reverse' })
 
 s = Select(...jobs)
 Clump(s)
@@ -29,4 +29,4 @@ LabelLocation(s, { placement: 'inline', coordinates: jobs })
 s = Select(jobs[m - 1])
 Label(s, 'm', { placement: 'inline' })
 
-Remove(s)
+Clear(s)

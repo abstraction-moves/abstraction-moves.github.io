@@ -2,7 +2,7 @@ let s = null
 Display(S3)
 
 s = Select(S3)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(...S3)
 Clump(s)

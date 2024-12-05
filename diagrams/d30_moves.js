@@ -2,7 +2,7 @@ let s = null
 Display(memory)
 
 s = Select(memory)
-SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(...memory)
 Clump(s)
@@ -30,4 +30,4 @@ Label(s, 'Code', { placement: 'right' })
 s = Select(memory[IP])
 Label(s, 'IP', { placement: 'left' })
 
-Remove(s)
+Clear(s)

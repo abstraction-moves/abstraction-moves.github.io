@@ -2,7 +2,7 @@ let s = null
 Display(L)
 
 s = Select(L)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
 let cutoff = 6
 

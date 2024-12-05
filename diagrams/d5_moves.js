@@ -2,7 +2,7 @@ let s = null
 Display(tree)
 
 s = Select(tree)
-SetVisualForm(s, 'Tree', { trim_leaves: true })
+Revisualize(s, 'Tree', { trim_leaves: true })
 
 s = SelectNodes(tree)
 Clump(s)
@@ -22,4 +22,4 @@ Label(s, 'New merged letter with sum of frequencies', { placement: 'right', push
 s = Select(l.left, l.right)
 Label(s, 'Two lowest-frequency letters', { placement: 'right', push_layout: false, individual: true })
 
-Remove(s)
+Clear(s)
