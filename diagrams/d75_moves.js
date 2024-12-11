@@ -3,13 +3,13 @@ let s = null
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical', margin: 100 })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical', margin: 100 })
 
 s = Select(tree)
-Revisualize(s, 'Tree', { horizontal_margin: 0, show_labels: false })
+SetVisualForm(s, 'Tree', { horizontal_margin: 0, show_labels: false })
 
 s = Select(L)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 let s2 = null
 for (let i = 0; i < 3; i++) {

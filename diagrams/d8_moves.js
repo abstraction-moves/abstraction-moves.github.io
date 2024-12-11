@@ -2,7 +2,7 @@ let s = null
 Display(T)
 
 s = Select(T)
-Revisualize(s, 'Grid')
+SetVisualForm(s, 'Grid')
 
 s = Select(T[0])
 LabelLocation(s, { placement: 'top', show_braces: false })
@@ -40,4 +40,4 @@ for (let i = 0; i < n * m; i++) {
     Label(s[i], labels[i], { placement: 'inline' })
 }
 
-Clear(s)
+Remove(s)

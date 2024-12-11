@@ -5,10 +5,10 @@ let layout = [[other, input], output]
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 100 })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 100 })
 
-Revisualize(Select(layout[0]), 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
-Revisualize(Select(other, input, output), 'Sequence', { style: 'Space Separated' })
+SetVisualForm(Select(layout[0]), 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
+SetVisualForm(Select(other, input, output), 'Sequence', { style: 'Space Separated' })
 
 s = Select(...other, ...input, ...output)
 Clump(s)
@@ -31,5 +31,5 @@ Connect(s, s2)
 s = Select(p)
 Connect(s, s2)
 
-Clear(s2)
-Clear(s)
+Remove(s2)
+Remove(s)

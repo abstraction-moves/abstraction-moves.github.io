@@ -2,7 +2,7 @@ let s = null
 Display(list)
 
 s = Select(list)
-Revisualize(s, 'Graph', { pointer_graph: true, show_labels: false })
+SetVisualForm(s, 'Graph', { pointer_graph: true, show_labels: false })
 
 s = Select(nodes.map((n) => n.val))
 Clump(s)

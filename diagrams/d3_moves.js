@@ -6,13 +6,12 @@ Display(u_array)
 Display(m_array)
 
 s = Select(u_array)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(m_array)
-Revisualize(s, 'Graph', { pointer_graph: true, orientation: 'Horizontal', centered: false })
+SetVisualForm(s, 'Graph', { pointer_graph: true, orientation: 'Horizontal', centered: false })
 
 s = Select(U[a], U[b], { within: u_array })
-
 Clump(InvertSelection(s))
 Hide(s)
 
@@ -21,7 +20,7 @@ Label(s[0], 'a', { placement: 'top', push_layout: false })
 Label(s[1], 'b', { placement: 'top', push_layout: false })
 
 s = Select(m_array)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(m_array[hash(a)], { resolve_pointers: false })
 Clump(InvertSelection(s))
@@ -33,7 +32,7 @@ s2 = Select(U[b], { within: u_array })
 Connect(s2, s)
 
 s = Select(m_array[hash(a)])
-Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(...m_array[hash(a)], { within: m_array })
 Hide(s)
@@ -49,4 +48,4 @@ s = Select(u_array)
 Label(s, '0', { placement: 'left', show_braces: false, push_layout: false })
 Label(s, 'u-1', { placement: 'right', show_braces: false, push_layout: false })
 
-Clear(s)
+Remove(s)

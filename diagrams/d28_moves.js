@@ -3,7 +3,7 @@ let combined = [M, D, R]
 Display(combined)
 
 s = Select(combined)
-Revisualize(s, 'Grid', { padding: [0, 0] })
+SetVisualForm(s, 'Grid', { padding: [0, 0] })
 
 s = Select(M)
 LabelLocation(s, { placement: 'top', show_braces: false })
@@ -23,4 +23,4 @@ s = SelectByCondition(R, (v) => v == 0)
 Hide(s)
 Label(s, 'n')
 
-Clear(s)
+Remove(s)

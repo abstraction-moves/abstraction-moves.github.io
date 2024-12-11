@@ -2,7 +2,7 @@ let s = null
 Display(tree)
 
 s = Select(tree)
-Revisualize(s, 'Tree')
+SetVisualForm(s, 'Tree')
 
 s = SelectNodes(tree)
 Clump(s)
@@ -25,4 +25,4 @@ Style(s[2], { background: '#f58220' })
 
 Label(s[3], 'x', { placement: 'right', push_layout: false, show_braces: false })
 
-Clear(s)
+Remove(s)

@@ -2,7 +2,7 @@ let s = null
 Display(L)
 
 s = Select(L)
-Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 0 })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 0 })
 
 s = Select(L.slice(0, 2))
 Hide(s)
@@ -16,4 +16,4 @@ s = Select(L.slice(7))
 Hide(s)
 Label(s, '2')
 
-Clear(s)
+Remove(s)

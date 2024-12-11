@@ -4,7 +4,7 @@ Display(X1)
 Display(X2)
 
 s = Select(X1, X2)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(...X2, ...X1)
 Hide(s)
@@ -31,5 +31,5 @@ s2 = SpanSelection(s2)
 Abbreviate(s)
 Abbreviate(s2)
 
-Clear(s)
-Clear(s2)
+Remove(s)
+Remove(s2)

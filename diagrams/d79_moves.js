@@ -4,13 +4,13 @@ let layout = [str, ast]
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
 
 s = Select(str)
-Revisualize(s, 'Sequence', { style: 'Space Separated', quote_on_string: false, margin: 2 })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', quote_on_string: false, margin: 2 })
 
 s = Select(ast)
-Revisualize(s, 'Tree')
+SetVisualForm(s, 'Tree')
 
 s = SelectNodes(ast)
 Clump(s)

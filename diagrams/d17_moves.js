@@ -2,13 +2,13 @@ let s = null
 Display(sdma_vl_map)
 
 s = Select(sdma_vl_map)
-Revisualize(s, 'Graph', { pointer_graph: true, vertical_margin: 80 })
+SetVisualForm(s, 'Graph', { pointer_graph: true, vertical_margin: 80 })
 
 s = Select(sdma_vl_map)
-Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(...sdma_vl_map.slice(4))
-Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(...sdma_vl_map.slice(6, -1), { resolve_pointers: false })
 Abbreviate(s)

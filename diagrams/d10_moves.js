@@ -7,5 +7,5 @@ LabelLocation(s2, { show_braces: false })
 
 Connect(s, s2)
 
-Clear(s)
-Clear(s2)
+Remove(s)
+Remove(s2)

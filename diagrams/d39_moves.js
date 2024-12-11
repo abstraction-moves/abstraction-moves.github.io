@@ -2,7 +2,7 @@ let s = null
 Display(Var('A'))
 
 s = Select(A)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = SelectByCondition(A, (v) => v == 1)
 Style(s, {

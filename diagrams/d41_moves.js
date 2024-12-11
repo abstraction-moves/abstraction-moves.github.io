@@ -2,7 +2,7 @@ let s = null
 Display(Var('G'))
 
 s = Select(G)
-Revisualize(s, 'Graph', { orientation: 'Vertical' })
+SetVisualForm(s, 'Graph', { orientation: 'Vertical' })
 
 s = Select(G.vertices)
 Clump(s)

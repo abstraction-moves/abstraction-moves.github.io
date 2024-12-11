@@ -10,13 +10,13 @@ let layout = [env, table]
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 100 })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 100 })
 
 s = Select(env)
-Revisualize(s, 'Graph', { pointer_graph: true, horizontal_margin: 0 })
+SetVisualForm(s, 'Graph', { pointer_graph: true, horizontal_margin: 0 })
 
 s = Select(table)
-Revisualize(s, 'Grid', { padding: [5, 5] })
+SetVisualForm(s, 'Grid', { padding: [5, 5] })
 
 s = Select(env.stack)
 s = SplitSelection(s)

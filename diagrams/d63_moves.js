@@ -2,7 +2,7 @@ let s = null
 Display(left_tree)
 
 s = Select(left_tree)
-Revisualize(s, 'Tree', { trim_leaves: true })
+SetVisualForm(s, 'Tree', { trim_leaves: true })
 
 s = SelectNodes(left_tree)
 Clump(s)
@@ -21,11 +21,11 @@ let layout = [right_tree, list]
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
 
 s = Select(right_tree)
-Revisualize(s, 'Tree', { trim_leaves: true, horizontal_margin: 25 })
-Revisualize(Select(list), 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Tree', { trim_leaves: true, horizontal_margin: 25 })
+SetVisualForm(Select(list), 'Sequence', { style: 'Blocks' })
 
 s = SelectNodes(right_tree)
 Clump(s)

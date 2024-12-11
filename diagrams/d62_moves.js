@@ -2,7 +2,7 @@ let s = null
 Display(G)
 
 s = Select(G)
-Revisualize(s, 'Graph')
+SetVisualForm(s, 'Graph')
 
 s = Select(G.vertices)
 Clump(s)
@@ -20,5 +20,5 @@ s = Select(G.vertices[2], G.vertices[3])
 s = SpanSelection(s)
 LabelEdge(s, 'c')
 
-Encircle(s)
+EncircleBackground(s)
 Label(s, 'vertex\ngadget', { placement: 'right' })

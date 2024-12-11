@@ -6,13 +6,13 @@ let s2 = null
 Display(abd)
 
 s = Select(abd)
-Revisualize(s, 'Sequence', { style: 'Space Separated' })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(ab)
-Revisualize(s, 'Sequence', { style: 'Space Separated' })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(a_bin, b_bin, d_bin)
-Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 0 })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 0 })
 
 s = Select(a_bin)
 s = PartitionSelection(s, n / 2)
@@ -33,5 +33,5 @@ s = Select(ab)
 s2 = Select(d_bin)
 Connect(s, s2)
 
-Clear(s)
-Clear(s2)
+Remove(s)
+Remove(s2)

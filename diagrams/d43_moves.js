@@ -2,26 +2,26 @@ let s = null
 Display(L)
 
 s = Select(L)
-Revisualize(s, 'Graph', { pointer_graph: true, orientation: 'Horizontal' })
+SetVisualForm(s, 'Graph', { pointer_graph: true, orientation: 'Horizontal' })
 
 s = Select(L)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(...L)
-Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(...L, { resolve_pointers: false })
 LabelLocation(s, { placement: 'top', show_braces: false })
 
 Display(L2)
 s = Select(L2)
-Revisualize(s, 'Graph', { pointer_graph: true, orientation: 'Horizontal' })
+SetVisualForm(s, 'Graph', { pointer_graph: true, orientation: 'Horizontal' })
 
 s = Select(L2)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(...L2)
-Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(L2[k], { resolve_pointers: false })
 s = InvertSelection(s)

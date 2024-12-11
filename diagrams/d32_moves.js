@@ -1,7 +1,7 @@
 let s = null
 Display(Var('G'))
 s = Select(G)
-Revisualize(s, 'Graph', { vertical_margin: 80, horizontal_margin: 80 })
+SetVisualForm(s, 'Graph', { vertical_margin: 80, horizontal_margin: 80 })
 
 s = Select(...G.vertices)
 Clump(s)

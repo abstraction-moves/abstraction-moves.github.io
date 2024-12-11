@@ -2,7 +2,7 @@ let s = null
 Display(Var('G'))
 
 s = Select(G)
-Revisualize(s, 'Graph', { orientation: 'Vertical' })
+SetVisualForm(s, 'Graph', { orientation: 'Vertical' })
 
 s = Select(G.vertices)
 Clump(s)
@@ -17,7 +17,7 @@ for (let i = 0; i < connected.length; i++) {
     let nodes = connected[i].map((j) => G.vertices[j])
     s = Select(nodes)
     s = SpanSelection(s)
-    Encircle(s)
+    EncircleBackground(s)
 }
 
-Clear(s)
+Remove(s)

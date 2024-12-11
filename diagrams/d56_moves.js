@@ -2,7 +2,7 @@ let s = null
 Display(L, { visual: 'Blocks' })
 
 s = Select(L)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = SpanSelection(Select(L.slice(0, 4)))
 Clump(s)

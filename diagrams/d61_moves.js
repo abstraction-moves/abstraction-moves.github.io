@@ -4,10 +4,10 @@ let layout = [A, B]
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated' })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(A, B)
-Revisualize(s, 'Grid', { style: 'Bordered' })
+SetVisualForm(s, 'Grid', { style: 'Bordered' })
 
 s = Select(
     A.slice(0, 2).map((r) => r.slice(0, 2)),

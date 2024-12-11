@@ -2,7 +2,7 @@ let s = null
 Display(L)
 
 s = Select(L)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = PartitionSelection(s, 2)
 Clump(s)
@@ -13,9 +13,9 @@ Label(s[1], 'y')
 Display(L2)
 
 s = Select(L2)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(...L2)
 Hide(s)
 
-Clear(s)
+Remove(s)

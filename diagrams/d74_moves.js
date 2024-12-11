@@ -2,7 +2,7 @@ let s = null
 Display(tree)
 
 s = Select(tree)
-Revisualize(s, 'Tree', { trim_leaves: true })
+SetVisualForm(s, 'Tree', { trim_leaves: true })
 
 s = Select(A, C, E, D, B)
 Fragment(s)
@@ -32,4 +32,4 @@ Label(s, 'w', { placement: 'right', push_layout: false, show_braces: false })
 s = Select(C)
 Label(s, 'c`', { placement: 'right', push_layout: false, show_braces: false })
 
-Clear(s)
+Remove(s)

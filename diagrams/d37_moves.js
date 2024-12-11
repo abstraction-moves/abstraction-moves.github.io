@@ -3,15 +3,15 @@ let s2 = null
 Display(Var('physical'))
 
 s = Select(physical)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 let layout = [page, msb, lsb]
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated' })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
 
-Revisualize(Select(page, msb, lsb), 'Sequence', { style: 'Blocks' })
+SetVisualForm(Select(page, msb, lsb), 'Sequence', { style: 'Blocks' })
 
 s = Select(...physical, ...page, ...msb, ...lsb)
 Clump(s)
@@ -43,7 +43,7 @@ s = Select(...physical.slice(15, -1))
 s2 = Select(...lsb)
 Connect(s, s2)
 
-Clear(s2)
+Remove(s2)
 
 s = Select(...page.slice(1, -2), ...physical.slice(1, 6))
 s = SpanSelection(s)

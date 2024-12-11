@@ -5,10 +5,10 @@ let s2 = null
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
 
 s = Select(...layout)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(...[field1_arr, field2_arr, leftover, result_arr])
 s = SplitSelection(s)
@@ -24,10 +24,10 @@ s2 = Select(sum_arr[0])
 Connect(s2, s[2])
 
 Clump(s2)
-Clear(s2)
+Remove(s2)
 
 s = Select(sum_arr.slice(1))
 s = SpanSelection(s)
 Clump(s)
 
-Clear(s)
+Remove(s)

@@ -2,7 +2,7 @@ let s = null
 Display(ll)
 
 s = Select(ll)
-Revisualize(s, 'Graph', { pointer_graph: true, show_labels: false })
+SetVisualForm(s, 'Graph', { pointer_graph: true, show_labels: false })
 
 s = Select(...nodes.map((n) => n.data))
 Hide(s)

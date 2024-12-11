@@ -3,10 +3,10 @@ let layout = [tree_a, tree_b]
 Display(layout)
 
 s = Select(layout)
-Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 80 })
+SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 80 })
 
 s = Select(tree_a, tree_b)
-Revisualize(s, 'Tree', { trim_leaves: true })
+SetVisualForm(s, 'Tree', { trim_leaves: true })
 
 s = SelectNodes(tree_a)
 Clump(s)
@@ -60,5 +60,5 @@ let s2 = SelectSubtree(tree_b)
 Connect(s, s2)
 Connect(s2, s)
 
-Clear(s)
-Clear(s2)
+Remove(s)
+Remove(s2)

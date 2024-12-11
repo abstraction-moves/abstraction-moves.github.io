@@ -4,7 +4,7 @@ Display(Var('T'))
 // let s = DataSelect(T.slice(5, 6))
 // s = Merge(s)
 // Abbreviate(s)
-// Clear(s)
+// Remove(s)
 
 // // Get the first column
 // let C = []

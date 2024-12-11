@@ -2,7 +2,7 @@ let s = null
 Display(Var('tree'))
 
 s = Select(tree)
-Revisualize(s, 'Tree', { trim_leaves: true })
+SetVisualForm(s, 'Tree', { trim_leaves: true })
 
 s = SelectNodes(tree)
 Clump(s)
@@ -23,4 +23,4 @@ while (node != null) {
     d++
 }
 
-Clear(s)
+Remove(s)

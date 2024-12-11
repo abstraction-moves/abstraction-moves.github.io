@@ -2,7 +2,7 @@ let s = null
 Display(A)
 
 s = Select(A)
-Revisualize(s, 'Sequence', { style: 'Blocks' })
+SetVisualForm(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(A.slice(0, n))
 s = SpanSelection(s)
@@ -26,4 +26,4 @@ Clump(s)
 Style(s, { background: 'bisque' })
 LabelLength(s, { placement: 'top' })
 
-Clear(s)
+Remove(s)
