@@ -10,16 +10,16 @@ let layout = [env, table]
 Display(layout)
 
 s = Select(layout)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 100 })
+Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 100 })
 
 s = Select(env)
-SetVisualForm(s, 'Graph', { pointer_graph: true, horizontal_margin: 0 })
+Revisualize(s, 'Graph', { pointer_graph: true })
 
 s = Select(table)
-SetVisualForm(s, 'Grid', { padding: [5, 5] })
+Revisualize(s, 'Grid', { padding: [5, 5] })
 
 s = Select(env.stack)
-s = SplitSelection(s)
+s = Select(...env.stack)
 Clump(s)
 
 let s2 = null
@@ -28,3 +28,6 @@ for (let i = 0; i < 3; i++) {
     s2 = SpanSelection(s2)
     Connect(s[i], s2)
 }
+
+Clear(s)
+Clear(s2)

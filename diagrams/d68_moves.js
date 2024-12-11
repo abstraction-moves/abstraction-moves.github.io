@@ -2,7 +2,7 @@ let s = null
 Display(root)
 
 s = Select(root)
-SetVisualForm(s, 'Tree', { horizontal_margin: 100 })
+Revisualize(s, 'Tree', { horizontal_margin: 100 })
 
 s = SelectNodes(root)
 Clump(s)
@@ -24,3 +24,5 @@ while (to_label.length > 0) {
         to_label.push(n.children[i])
     }
 }
+
+Clear(s)

@@ -3,9 +3,9 @@ let layout = [b1, b2, b_result]
 Display(layout)
 
 s = Select(layout)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
+Revisualize(s, 'Sequence', { style: 'Space Separated', orientation: 'Vertical' })
 
-SetVisualForm(Select(b1, b2, b_result), 'Sequence', { style: 'Blocks' })
+Revisualize(Select(b1, b2, b_result), 'Sequence', { style: 'Blocks' })
 
 s = Select(b1)
 Label(s, n1 + '', { placement: 'left', show_braces: false, push_layout: false })
@@ -23,16 +23,14 @@ Style(s, {
     borderLeft: '1px solid white',
 })
 
-s = Select(b1[2])
-let s2 = Select(b_result[2])
-Connect(s, s2)
+let s2 = null
 
-s = Select(b1[5])
-s2 = Select(b_result[5])
-Connect(s, s2)
+for (let i = 0; i < b_result.length; i++) {
+    if (b_result[i] == 1) {
+        s = Select(b1[i])
+        s2 = Select(b_result[i])
+        Connect(s, s2)
+    }
+}
 
-s = Select(b1[7])
-s2 = Select(b_result[7])
-Connect(s, s2)
-
-Remove(s)
+Clear(s)

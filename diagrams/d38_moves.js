@@ -2,7 +2,7 @@ let s = null
 Display(Var('dom'))
 
 s = Select(dom)
-SetVisualForm(s, 'Tree', { orientation: 'Horizontal' })
+Revisualize(s, 'Tree', { orientation: 'Horizontal' })
 
 s = SelectNodes(dom)
 Clump(s)

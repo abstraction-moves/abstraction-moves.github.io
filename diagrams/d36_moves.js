@@ -2,7 +2,7 @@ let s = null
 Display(A)
 
 s = Select(A)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(A.slice(0, 8))
 s = SpanSelection(s)

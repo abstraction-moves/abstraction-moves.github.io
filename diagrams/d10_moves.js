@@ -5,7 +5,7 @@ let s = Select(cmd)
 let s2 = Select(...cmd_split)
 LabelLocation(s2, { show_braces: false })
 
-Connect(s, s2)
+Connect(s, s2, { mapping: 'many-to-many' })
 
-Remove(s)
-Remove(s2)
+Clear(s)
+Clear(s2)

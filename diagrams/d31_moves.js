@@ -2,7 +2,7 @@ let s = null
 Display(Var('G'))
 
 s = Select(G)
-SetVisualForm(s, 'Graph', { orientation: 'Vertical', vertical_margin: 80, horizontal_margin: 80 })
+Revisualize(s, 'Graph', { orientation: 'Vertical', vertical_margin: 80, horizontal_margin: 80 })
 
 s = Select(...G.vertices)
 
@@ -15,7 +15,7 @@ for (let i = 0; i < flow.length; i++) {
 
     LabelEdge(s, flow[i].current + '')
 
-    Remove(s)
+    Clear(s)
 }
 
 s = Select(G.vertices[0], G.vertices[1])

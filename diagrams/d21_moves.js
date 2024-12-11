@@ -4,7 +4,7 @@ Display(B)
 Display(A)
 
 s = Select(A, B)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated', margin: 10 })
+Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 10 })
 
 for (let i = 0; i < indices.length; i++) {
     let ai = indices[i][0]

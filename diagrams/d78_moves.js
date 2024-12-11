@@ -2,7 +2,7 @@ let s = null
 Display(T)
 
 s = Select(T)
-SetVisualForm(s, 'Tree', { indented: true, vertical_margin: 0, show_labels: false })
+Revisualize(s, 'Tree', { indented: true, vertical_margin: 0, show_labels: false })
 
 s = SelectNodes(T)
 Clump(s)
@@ -24,3 +24,5 @@ Label(s[4], 'Proxies for B', { placement: 'right' })
 
 Label(s[5], 'Site A')
 Label(s[5], 'Proxies for B', { placement: 'right' })
+
+Clear(s)

@@ -2,7 +2,7 @@ let s = null
 Display(T)
 
 s = Select(T)
-SetVisualForm(s, 'Grid')
+Revisualize(s, 'Grid')
 
 s = Select(T[0])
 LabelLocation(s, { placement: 'top', show_braces: false })
@@ -14,7 +14,7 @@ s = Select(c1)
 LabelLocation(s, { placement: 'left', coordinates: c1, show_braces: false })
 Label(SpanSelection(s), 'row', { placement: 'left', coordinates: c1 })
 
-s = SplitSelection(Select(T))
+s = Select(...T)
 Hide(s)
 
 let labels = [
@@ -37,7 +37,9 @@ let labels = [
 ]
 
 for (let i = 0; i < n * m; i++) {
-    Label(s[i], labels[i], { placement: 'inline' })
+    let x = i % n
+    let y = Math.floor(i / n)
+    Label(Select(T[x][y]), labels[i], { placement: 'inline' })
 }
 
-Remove(s)
+Clear(s)

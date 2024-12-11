@@ -2,7 +2,7 @@ let S = { u, w, r, v, t, z, j, x, y, i }
 Display(S)
 
 let s = Select(S)
-SetVisualForm(s, 'Graph', { pointer_graph: true, multi_pointer: true, show_labels: false, orientation: 'Horizontal' })
+Revisualize(s, 'Graph', { pointer_graph: true, multi_pointer: true, show_labels: false, orientation: 'Horizontal' })
 
 let pointers = Object.values(S).map((v) => v.data)
 
@@ -16,4 +16,4 @@ Style(s, {
     'stroke-dasharray': '4 4',
 })
 
-Remove(s)
+Clear(s)

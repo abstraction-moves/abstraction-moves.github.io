@@ -1,21 +1,11 @@
-Display(Var('L'))
+Display(T)
+let s = Select(T)
 
-let s = Select(L)
-SetVisualForm(s, 'Sequence', {
-    style: 'Blocks',
-})
+Revisualize(s, 'Tree', { horizontal_margin: 35, vertical_margin: 35 })
 
-let m = 4
-
-s = PartitionSelection(s, m)
+s = SelectNodes(T)
 Clump(s)
 
-LabelLocation(s, {
-    coordinates: L,
-    // range: [0, Var('n')],
-    // remap_range: true
-})
-
-for (let i = 0; i < m - 1; i++) {
-    Connect(s[i], s[i + 1])
-}
+s = Select(T, T.right)
+s = SpanSelection(s)
+Encircle(s, { background: 'lightyellow' })

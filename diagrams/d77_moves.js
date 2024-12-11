@@ -2,9 +2,9 @@ let s = null
 Display(T)
 
 s = Select(T)
-SetVisualForm(s, 'Tree')
+Revisualize(s, 'Tree')
 
 s = SelectNodes(T)
-SetVisualForm(s, 'Hierarchy', { style: 'Bordered' })
+Revisualize(s, 'Hierarchy', { style: 'Bordered' })
 
-Remove(s)
+Clear(s)

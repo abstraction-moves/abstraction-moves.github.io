@@ -4,9 +4,9 @@ let layout = [names, booleans, filtered_names]
 Display(layout)
 
 s = Select(layout)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
+Revisualize(s, 'Sequence', { style: 'Space Separated', margin: 80 })
 
-SetVisualForm(Select(names, booleans, filtered_names), 'Sequence', {
+Revisualize(Select(names, booleans, filtered_names), 'Sequence', {
     style: 'Space Separated',
     orientation: 'Vertical',
 })
@@ -20,5 +20,5 @@ s2 = Select(...filtered_names)
 
 Connect(s, s2)
 
-Remove(s)
-Remove(s2)
+Clear(s)
+Clear(s2)

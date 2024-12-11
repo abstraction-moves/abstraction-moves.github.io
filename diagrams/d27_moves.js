@@ -7,10 +7,10 @@ Display(left_layout)
 Display(right_layout)
 
 s = Select(left_layout, right_layout)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
+Revisualize(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(left_flat, right_flat)
-SetVisualForm(s, 'Sequence', { style: 'Comma Separated' })
+Revisualize(s, 'Sequence', { style: 'Comma Separated' })
 
 s = Select(left_flat_head, right_flat_head)
 Clump(s)
@@ -27,4 +27,4 @@ Clump(s)
 Label(s[0], 'node 1')
 Label(s[1], 'node 2')
 
-Remove(s)
+Clear(s)

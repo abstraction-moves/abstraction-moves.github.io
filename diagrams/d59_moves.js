@@ -3,13 +3,13 @@ Display(openUpvalues)
 Display(memory)
 
 s = Select(openUpvalues)
-SetVisualForm(s, 'Graph', { pointer_graph: true })
+Revisualize(s, 'Graph', { pointer_graph: true })
 
 s = Select(memory)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
 s = SelectNodes(openUpvalues)
-SetVisualForm(s, 'Hierarchy', { style: 'Bordered' })
+Revisualize(s, 'Hierarchy', { style: 'Bordered' })
 
 s = Select(memory.slice(0, padding_size), memory.slice(memory.length - padding_size + 1))
 s = SpanSelection(s)
@@ -49,4 +49,4 @@ node = node.next
 s = Select(node.location)
 Connect(s, Select(memory[node.location]))
 
-Remove(s)
+Clear(s)

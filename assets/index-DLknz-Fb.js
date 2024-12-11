@@ -5421,6 +5421,175 @@ function tokenizer(input, options) {
 }
 let State$1 = (_a2 = class {
 }, __publicField(_a2, "solver"), __publicField(_a2, "container"), __publicField(_a2, "post_constraints"), __publicField(_a2, "cells"), _a2);
+function _extends$2() {
+  _extends$2 = Object.assign || function(target) {
+    for (var i2 = 1; i2 < arguments.length; i2++) {
+      var source = arguments[i2];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends$2.apply(this, arguments);
+}
+function distanceOf(p1, p2) {
+  return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+}
+function growBox(box, size2) {
+  return {
+    x: box.x - size2,
+    y: box.y - size2,
+    w: box.w + 2 * size2,
+    h: box.h + 2 * size2
+  };
+}
+function isPointInBox(point, box) {
+  return point.x > box.x && point.x < box.x + box.w && point.y > box.y && point.y < box.y + box.h;
+}
+function controlPointOf(target, another, sideOfTarget, minDistanceToTarget) {
+  if (minDistanceToTarget === void 0) {
+    minDistanceToTarget = 50;
+  }
+  switch (sideOfTarget) {
+    case "top": {
+      return {
+        x: target.x,
+        y: Math.min((target.y + another.y) / 2, target.y - minDistanceToTarget)
+      };
+    }
+    case "bottom": {
+      return {
+        x: target.x,
+        y: Math.max((target.y + another.y) / 2, target.y + minDistanceToTarget)
+      };
+    }
+    case "left": {
+      return {
+        x: Math.min((target.x + another.x) / 2, target.x - minDistanceToTarget),
+        y: target.y
+      };
+    }
+    case "right": {
+      return {
+        x: Math.max((target.x + another.x) / 2, target.x + minDistanceToTarget),
+        y: target.y
+      };
+    }
+  }
+}
+function angleOf(enteringSide) {
+  switch (enteringSide) {
+    case "left":
+      return 0;
+    case "top":
+      return 90;
+    case "right":
+      return 180;
+    case "bottom":
+      return 270;
+  }
+}
+function getBoxToBoxArrow$1(x0, y0, w0, h0, x1, y1, w1, h1, userOptions) {
+  var options = _extends$2({
+    padStart: 0,
+    padEnd: 0,
+    controlPointStretch: 50,
+    allowedStartSides: ["top", "right", "bottom", "left"],
+    allowedEndSides: ["top", "right", "bottom", "left"]
+  }, userOptions);
+  var startBox = {
+    x: x0,
+    y: y0,
+    w: w0,
+    h: h0
+  };
+  var startAtTop = {
+    x: x0 + w0 / 2,
+    y: y0 - 2 * options.padStart
+  };
+  var startAtBottom = {
+    x: x0 + w0 / 2,
+    y: y0 + h0 + 2 * options.padStart
+  };
+  var startAtLeft = {
+    x: x0 - 2 * options.padStart,
+    y: y0 + h0 / 2
+  };
+  var startAtRight = {
+    x: x0 + w0 + 2 * options.padStart,
+    y: y0 + h0 / 2
+  };
+  var endBox = {
+    x: x1,
+    y: y1,
+    w: w1,
+    h: h1
+  };
+  var endAtTop = {
+    x: x1 + w1 / 2,
+    y: y1 - 2 * options.padEnd
+  };
+  var endAtBottom = {
+    x: x1 + w1 / 2,
+    y: y1 + h1 + 2 * options.padEnd
+  };
+  var endAtLeft = {
+    x: x1 - 2 * options.padEnd,
+    y: y1 + h1 / 2
+  };
+  var endAtRight = {
+    x: x1 + w1 + 2 * options.padEnd,
+    y: y1 + h1 / 2
+  };
+  var allSides = ["top", "right", "bottom", "left"];
+  var startSides = options.allowedStartSides.length > 0 ? options.allowedStartSides : allSides;
+  var endSides = options.allowedEndSides.length > 0 ? options.allowedEndSides : allSides;
+  var startPoints = {
+    "top": startAtTop,
+    "right": startAtRight,
+    "bottom": startAtBottom,
+    "left": startAtLeft
+  };
+  var endPoints = {
+    "top": endAtTop,
+    "right": endAtRight,
+    "bottom": endAtBottom,
+    "left": endAtLeft
+  };
+  var shortestDistance = 1 / 0;
+  var bestStartPoint = startAtTop;
+  var bestEndPoint = endAtTop;
+  var bestStartSide = "top";
+  var bestEndSide = "top";
+  var keepOutZone = 15;
+  for (var startSideId = 0; startSideId < startSides.length; startSideId++) {
+    var startSide = startSides[startSideId];
+    var startPoint = startPoints[startSide];
+    if (isPointInBox(startPoint, growBox(endBox, keepOutZone))) continue;
+    for (var endSideId = 0; endSideId < endSides.length; endSideId++) {
+      var endSide = endSides[endSideId];
+      var endPoint = endPoints[endSide];
+      if (isPointInBox(endPoint, growBox(startBox, keepOutZone))) continue;
+      var d = distanceOf(startPoint, endPoint);
+      if (d < shortestDistance) {
+        shortestDistance = d;
+        bestStartPoint = startPoint;
+        bestEndPoint = endPoint;
+        bestStartSide = startSide;
+        bestEndSide = endSide;
+      }
+    }
+  }
+  var controlPointForStartPoint = controlPointOf(bestStartPoint, bestEndPoint, bestStartSide, options.controlPointStretch);
+  var controlPointForEndPoint = controlPointOf(bestEndPoint, bestStartPoint, bestEndSide, options.controlPointStretch);
+  return [bestStartPoint.x, bestStartPoint.y, controlPointForStartPoint.x, controlPointForStartPoint.y, controlPointForEndPoint.x, controlPointForEndPoint.y, bestEndPoint.x, bestEndPoint.y, angleOf(bestEndSide), angleOf(bestStartSide)];
+}
+function getArrow$1(x0, y0, x1, y1, userOptions) {
+  return getBoxToBoxArrow$1(x0, y0, 0, 0, x1, y1, 0, 0, userOptions);
+}
 function _extends$1() {
   return _extends$1 = Object.assign ? Object.assign.bind() : function(n) {
     for (var e2 = 1; e2 < arguments.length; e2++) {
@@ -56341,6 +56510,9 @@ function create_blocks(_array, _sub_diagrams, _options = {}) {
       default_update(diagram2);
     }
     const classes2 = ["d-blocks-containers", `d-blocks-${orientation.toLowerCase()}`];
+    if (diagram2.direction == "Reverse") {
+      classes2.push("d-blocks-reverse");
+    }
     children.forEach((c) => {
       if (c.type == "Container" || c.type == "Chunk") {
         c.inner_el.classList.remove("d-blocks-last");
@@ -56362,6 +56534,16 @@ function create_blocks(_array, _sub_diagrams, _options = {}) {
         c.el.classList.add(...classes2);
       }
     });
+    for (let i2 = 0; i2 < children.length; i2++) {
+      if (children[i2].type == "Chunk" && i2 > 0) {
+        let prev = children[i2 - 1];
+        if (prev != null && (prev.type == "Container" || prev.type == "Chunk")) {
+          prev.inner_el.classList.add("d-blocks-last");
+        } else if (prev != null) {
+          prev.el.classList.add("d-blocks-last");
+        }
+      }
+    }
     return { propagate: true, style: true };
   }
   diagram.get_constraints = get_constraints;
@@ -56531,8 +56713,8 @@ function create_object_blocks(object_data, sub_diagrams, _options = {}) {
       padding: _options.padding ?? [10, 4],
       empty_height: 40,
       empty_width: 40,
-      top_margin: label_height,
-      class_name: "d-object-blocks"
+      top_margin: label_height
+      // class_name: 'd-object-blocks',
     }),
     type: "ObjectBlocks",
     show_labels: _options.show_labels ?? true
@@ -56637,7 +56819,6 @@ function create_table(raw_array, diagram_header, diagram_rows, _options = {}) {
   diagram_header.forEach((d) => {
     if (d.type == "Primitive") {
       d.quote_on_string = false;
-      d.colon_on_string = true;
     }
   });
   const header_background = create_el("div", "d-table-header-background");
@@ -56859,7 +57040,7 @@ function create_tree_graph(_data, _nodes, _options = {}) {
       horizontal_margin: _options.horizontal_margin ?? 50,
       vertical_margin: _options.vertical_margin ?? 50,
       orientation: _options.orientation ?? "Horizontal",
-      padding: [10, 10]
+      padding: _options.padding ?? [10, 10]
     }),
     type: "TreeGraph"
   };
@@ -57022,6 +57203,10 @@ function create_data_connection(_from, _to, options = {}) {
     from: _from,
     to: _to,
     directed: options.directed ?? true,
+    flip: options.flip ?? false,
+    straights: options.straights ?? true,
+    from_pivot: options.from_pivot ?? "any",
+    to_pivot: options.to_pivot ?? "any",
     update,
     arrow_els: [_arrow_el],
     head_els: [_head_el]
@@ -57064,9 +57249,19 @@ function create_data_connection(_from, _to, options = {}) {
       d2_transform.height = Math.max(...d2.children.map((c) => c.top.value() + c.height.value())) - d2_transform.y;
       d2_transform.width = Math.max(...d2.children.map((c) => c.left.value() + c.width.value())) - d2_transform.x;
     }
-    const p1 = { ...d1_transform };
-    const p2 = { ...d2_transform };
-    const arrow = create_bbox_arrow(p1, p2);
+    let p1 = { ...d1_transform };
+    let p2 = { ...d2_transform };
+    if (connection.to_pivot != "any") {
+      p2.width = 1;
+      p2.height = 1;
+    }
+    const arrow = create_bbox_arrow(p1, p2, {
+      // padEnd: 7,
+      // stretchMin: 0,
+      // padStart: 4,
+      flip: connection.flip,
+      straights: connection.straights
+    });
     arrow_el.setAttribute("d", arrow.path_points);
     head_el.setAttribute("transform", arrow.arrow_head_transform);
     head_el.setAttribute("points", arrow.arrow_head_points);
@@ -57127,7 +57322,7 @@ var convexhull;
   }
   convexhull2.POINT_COMPARATOR = POINT_COMPARATOR;
 })(convexhull || (convexhull = {}));
-function create_encircle_highlight(_selection) {
+function create_encircle_highlight(_selection, styles) {
   const _encircle_el = create_path_element("d-encircle-background");
   const _diagram = {
     ...create_diagram("d-encircle", {
@@ -57139,6 +57334,14 @@ function create_encircle_highlight(_selection) {
     type: "Encircle",
     encircle_el: _encircle_el
   };
+  for (let [s_name, s_val] of Object.entries(styles)) {
+    if (s_name == "background") {
+      s_name = "fill";
+    } else if (s_name == "border") {
+      s_name = "stroke";
+    }
+    _encircle_el.style[s_name] = s_val;
+  }
   function get_constraints(diagram) {
     assert(diagram.type == "Encircle", "Invalid update type");
     return [];
@@ -57149,15 +57352,20 @@ function create_encircle_highlight(_selection) {
     const selected_diagrams = selection.get_selected_diagrams(selection);
     const svg2 = State$1.container.getElementsByTagName("svg")[0];
     const points = selected_diagrams.map((d2) => get_transform(d2, true, true)).map((d2) => {
+      const padding = 5;
+      const l = d2.left.value() - padding;
+      const t2 = d2.top.value() - padding;
+      const h = d2.height.value() + padding * 2;
+      const w = d2.width.value() + padding * 2;
       return [
-        { x: d2.left.value(), y: d2.top.value() },
-        { x: d2.left.value(), y: d2.top.value() + d2.height.value() / 2 },
-        { x: d2.left.value(), y: d2.top.value() + d2.height.value() },
-        { x: d2.left.value() + d2.width.value() / 2, y: d2.top.value() + d2.height.value() },
-        { x: d2.left.value() + d2.width.value(), y: d2.top.value() + d2.height.value() },
-        { x: d2.left.value() + d2.width.value(), y: d2.top.value() + d2.height.value() / 2 },
-        { x: d2.left.value() + d2.width.value(), y: d2.top.value() },
-        { x: d2.left.value() + d2.width.value() / 2, y: d2.top.value() }
+        { x: l, y: t2 },
+        { x: l, y: t2 + h / 2 },
+        { x: l, y: t2 + h },
+        { x: l + w / 2, y: t2 + h },
+        { x: l + w, y: t2 + h },
+        { x: l + w, y: t2 + h / 2 },
+        { x: l + w, y: t2 },
+        { x: l + w / 2, y: t2 }
       ];
     }).flat();
     const hull = convexhull.makeHull(points);
@@ -57680,10 +57888,18 @@ function create_label(_selection, _text, _options, root) {
   return diagram;
 }
 const SELECTION_COLORS = [
-  "rgba(113, 37, 255, 0.2)",
-  "rgba(255, 98, 37, 0.2)",
-  "rgba(37, 92, 255, 0.2)",
-  "rgba(80, 155, 88, 0.2)"
+  // 'rgba(113, 37, 255, 0.2)',
+  // 'rgba(255, 98, 37, 0.2)',
+  // 'rgba(37, 92, 255, 0.2)',
+  // 'rgba(80, 155, 88, 0.2)',
+  "rgba(208, 71, 219, 0.2)",
+  "rgba(255, 180, 37, 0.2)",
+  "rgba(31, 163, 214, 0.2)",
+  "rgba(133, 198, 140, 0.2)"
+  // 'rgba(240, 64, 255, 0.2)',
+  // 'rgba(255, 180, 37, 0.2)',
+  // 'rgba(37, 194, 255, 0.2)',
+  // 'rgba(133, 198, 140, 0.2)',
 ];
 let __SELECTION_COLOR_INDEX = { counter: 0 };
 function get_selection_color() {
@@ -57742,7 +57958,7 @@ function create_data_select(_data, _data_diagram, root) {
   select.constraints = get_constraints(select);
   return select;
 }
-function create_range_select(_parent_diagram, _chunk, _layout, root) {
+function create_range_select(_parent_diagram, _chunk, _layout, root, edge_select = false) {
   const select = {
     ...create_diagram("d-contiguous-selection", {
       children: [],
@@ -57754,6 +57970,7 @@ function create_range_select(_parent_diagram, _chunk, _layout, root) {
     range: _chunk,
     layout: _layout,
     is_selection: true,
+    is_edge_select: edge_select,
     get_selected_diagrams,
     on_parent_replace
   };
@@ -57849,7 +58066,7 @@ function get_selected_diagrams_union_select(diagram) {
   });
   return Array.from(selected);
 }
-function create_tree_select(_start, _path, _ancestor, root) {
+function create_tree_select(_start, _path, _ancestor, root, edge_select = false) {
   const _select = {
     ...create_diagram("d-tree-selection", {
       children: [],
@@ -57864,7 +58081,8 @@ function create_tree_select(_start, _path, _ancestor, root) {
     is_selection: true,
     get_selected_diagrams,
     get_edge_el_indices_in_ancestor,
-    selection_els: []
+    selection_els: [],
+    is_edge_select: edge_select
   };
   _select.el.style.backgroundColor = get_selection_color();
   function get_selected_diagrams_helper(node, path, ancestor2) {
@@ -57932,33 +58150,35 @@ function create_tree_select(_start, _path, _ancestor, root) {
     let { selection_els, el, ancestor: ancestor2 } = diagram;
     const selected_diagrams = diagram.get_selected_diagrams(diagram);
     const observed = /* @__PURE__ */ new Set();
-    for (let _sel of selected_diagrams) {
-      const propagated = propagate_up_to_chunk(_sel);
-      if (propagated.delta > 3) {
-        console.warn("[create_tree_select] Ignoring chunk...");
-        continue;
+    if (diagram.is_edge_select == false) {
+      for (let _sel of selected_diagrams) {
+        const propagated = propagate_up_to_chunk(_sel);
+        if (propagated.delta > 3) {
+          console.warn("[create_tree_select] Ignoring chunk...");
+          continue;
+        }
+        let sel = propagated.diagram;
+        if (observed.has(sel)) {
+          continue;
+        }
+        observed.add(sel);
+        if (propagated.diagram.type == "Container") {
+          sel = propagated.diagram.children[0];
+        }
+        const el2 = create_el("div", "d-tree-selection");
+        State$1.container.append(el2);
+        el2.style.left = `${sel.left.value()}px`;
+        el2.style.top = `${sel.top.value()}px`;
+        el2.style.width = `${sel.width.value()}px`;
+        el2.style.height = `${sel.height.value()}px`;
+        selection_els.push(el2);
       }
-      let sel = propagated.diagram;
-      if (observed.has(sel)) {
-        continue;
-      }
-      observed.add(sel);
-      if (propagated.diagram.type == "Container") {
-        sel = propagated.diagram.children[0];
-      }
-      const el2 = create_el("div", "d-tree-selection");
-      State$1.container.append(el2);
-      el2.style.left = `${sel.left.value()}px`;
-      el2.style.top = `${sel.top.value()}px`;
-      el2.style.width = `${sel.width.value()}px`;
-      el2.style.height = `${sel.height.value()}px`;
-      selection_els.push(el2);
     }
     const edge_els = diagram.get_edge_el_indices_in_ancestor(diagram).map((i2) => ancestor2.edge_els[i2]);
     edge_els.forEach((edge_el) => {
       const sel_edge_el = create_path_element("d-tree-selection-edge");
       sel_edge_el.setAttribute("d", edge_el.getAttribute("d"));
-      sel_edge_el.setAttribute("stroke", el.style.backgroundColor);
+      sel_edge_el.style.stroke = el.style.backgroundColor;
       edge_els.push(sel_edge_el);
     });
     const svg2 = State$1.container.getElementsByTagName("svg")[0];
@@ -58502,7 +58722,6 @@ function execute_diagram_moves(__user_code, __move_raw_code) {
         return __parse_expr(`tag_value(${generate(node)})`);
       }
       if (node.type == "TemplateLiteral") {
-        console.log(generate(node));
       }
       if (node.type == "AssignmentExpression") {
         const right2 = generate(node.right);
@@ -58735,7 +58954,6 @@ function Make(data2, _structure, _options = {}) {
     const resolved = resolve_pointers(data2);
     return Make(resolved, null, propagated_options);
   }
-  console.log("structure", structure, _structure);
   switch (structure) {
     case "Primitive":
       if (data2.type == "Boolean" || data2.type == "Null" || data2.type == "Number" || data2.type == "Undefined" || data2.type == "String")
@@ -58873,7 +59091,9 @@ function resolve_pointer_from_id(id2) {
 }
 function Connect(s1, s2, _options = {}) {
   const options = resolve_options(_options);
-  options.connect_all = options.connect_all ?? false;
+  options.mapping = options.mapping ?? "one-to-one";
+  options.flip = options.flip == null ? false : options.flip;
+  options.straights = options.straights == null ? true : options.straights;
   const connections = [];
   let selected_1 = s1.get_selected_diagrams(s1);
   let selected_2 = s2.get_selected_diagrams(s2);
@@ -58884,19 +59104,12 @@ function Connect(s1, s2, _options = {}) {
     selected_2 = [create_group_diagram(selected_2)];
   }
   const n = Math.min(selected_1.length, selected_2.length);
-  if (!options.connect_all) {
-    if (selected_1.length == 1 && selected_2.length > 1) {
-      for (let i2 = 0; i2 < selected_2.length; i2++) {
-        const connection = create_data_connection(selected_1[0], selected_2[i2], options);
-        connections.push(connection);
-      }
-    } else {
-      for (let i2 = 0; i2 < n; i2++) {
-        const connection = create_data_connection(selected_1[i2], selected_2[i2], options);
-        connections.push(connection);
-      }
+  if (options.mapping == "one-to-one") {
+    for (let i2 = 0; i2 < n; i2++) {
+      const connection = create_data_connection(selected_1[i2], selected_2[i2], options);
+      connections.push(connection);
     }
-  } else {
+  } else if (options.mapping == "many-to-many") {
     for (const d1 of selected_1) {
       for (const d2 of selected_2) {
         if (d1 == d2) continue;
@@ -58956,7 +59169,6 @@ function Select(..._args) {
   let inputs_indices = args2.map((_, i2) => i2).filter(
     (i2) => args2[i2] != null && "kind" in args2[i2] && "id" in args2[i2] && !option_arg_names.some((n) => args2[i2].raw != null && n in args2[i2].raw)
   );
-  console.log("inputs", args2);
   let inputs = args2.filter((a, i2) => inputs_indices.includes(i2));
   let _options = args2.find((a) => !inputs.includes(a)) ?? {};
   let options = resolve_options(_options, [
@@ -58966,7 +59178,6 @@ function Select(..._args) {
     return UnionSelect(inputs.map((input) => DataSelect(input, { ...options, individual: false })));
   }
   if (options.resolve_pointers == false) {
-    console.log("here 2");
     inputs = _args.filter((a, i2) => inputs_indices.includes(i2));
   }
   let selection = UnionSelect(inputs.map((input) => DataSelect(input, options)));
@@ -58984,22 +59195,53 @@ function SelectNodes(data2) {
   const data_selects = flat_nodes.map((n) => create_data_select(n.data, n, Root()));
   return UnionSelect(data_selects);
 }
-function SelectPath(start, path) {
-  start = resolve_pointers(start);
-  const start_diagram = get_data_diagrams(start)[0];
-  const diagram_path = diagram_find_by_path(Root(), (d) => d == start_diagram);
-  const ancestor2 = diagram_path.find((p) => "structure" in p && p.structure == "Tree");
-  const node = get_flat_tree_nodes(ancestor2.nodes).find((n) => {
-    const n_node = get_diagram_of_node(n);
-    if (n_node != null) {
-      const path2 = diagram_find_by_path(n_node, (d) => d == start_diagram);
-      return path2 != null;
-    }
-    return false;
+function SelectRows(data2, start, end, _options = {}) {
+  let options = resolve_options(_options);
+  data2 = resolve_pointers(data2);
+  const grid_diagrams = get_data_diagrams(data2).filter((d) => {
+    return "structure" in d && d.structure == "Grid";
   });
-  assert(!("is_chunk" in node), "[SelectPath] Chunks not supported for selection");
-  const selection = create_tree_select(node, get_clean_value(path), ancestor2, Root());
-  return selection;
+  const selections = [];
+  for (const diagram of grid_diagrams) {
+    let rows = diagram.array_data.__value.slice(start.__value, (end == null ? void 0 : end.__value) ?? start.__value + 1);
+    rows = rows.map((r) => resolve_pointers(r));
+    for (const r of rows) {
+      const selected_data = [];
+      if (r.type == "Array") {
+        selected_data.push(...r.__value);
+      } else {
+        selected_data.push(r);
+      }
+      selections.push(SpanSelection(UnionSelect(selected_data.map((d) => DataSelect(d, _options)))));
+    }
+  }
+  return UnionSelect(selections);
+}
+function SelectCols(data2, start, end) {
+  data2 = resolve_pointers(data2);
+  const grid_diagrams = get_data_diagrams(data2).filter((d) => {
+    return "structure" in d && d.structure == "Grid";
+  });
+  const selected_data = [];
+  for (const diagram of grid_diagrams) {
+    for (const _row of diagram.array_data.__value) {
+      const row2 = resolve_pointers(_row);
+      let items = row2.__value.slice(start.__value, (end == null ? void 0 : end.__value) ?? start.__value + 1);
+      for (let item of items) {
+        if (item.type == "KeyValuePair") {
+          item = item.__value;
+        }
+        selected_data.push(item);
+      }
+    }
+  }
+  return SpanSelection(UnionSelect(selected_data.map((d) => DataSelect(d))));
+}
+function SelectEdge(v1, v2) {
+  v1 = resolve_pointers(v1);
+  v2 = v2 ? resolve_pointers(v2) : null;
+  return SpanSelection(Select(v1, v2), true);
+  return UnionSelect([]);
 }
 function SelectSubtree(data2) {
   data2 = resolve_pointers(data2);
@@ -59013,7 +59255,6 @@ function SelectSubtree(data2) {
   )[0];
   const path = diagram_find_by_path(Root(), (d) => d.id == diagram.id);
   const ancestor2 = path.find((p) => "structure" in p && p.structure == "Tree");
-  console.log(diagram, ancestor2);
   const nodes = get_flat_tree_nodes(ancestor2.nodes);
   let parent = nodes.find((n) => {
     const n_node = get_diagram_of_node(n);
@@ -59062,7 +59303,7 @@ function Replace(original_diagram, new_diagram) {
   }
   return new_diagram;
 }
-function Remove(diagram) {
+function Clear(diagram) {
   ClearParent(diagram);
   for (let i2 = __State.length - 1; i2 >= 0; i2--) {
     let deleted = false;
@@ -59158,25 +59399,23 @@ function InvertSelection(selection) {
     const ancestor_inverse_selections = ancestor_inverse_data.map(
       (d, i2) => create_data_select(d, ancestor_inverse_diagrams[i2], Root())
     );
-    inverse_selections.push(SpanSelection(UnionSelect(ancestor_inverse_selections)));
+    inverse_selections.push(UnionSelect(ancestor_inverse_selections));
   }
   return UnionSelect(inverse_selections);
 }
-function SetVisualForm(selection, _structure, _options = {}) {
+function Revisualize(selection, _structure, _options = {}) {
   let options = resolve_options(_options);
   let structure = typeof _structure == "object" ? get_clean_value(_structure) : _structure;
-  console.log("\n\nstructure", structure);
-  console.log("_structure", structure);
   if (selection.type == "UnionSelect") {
-    selection.children.forEach((c) => SetVisualForm(c, _structure, options));
+    selection.children.forEach((c) => Revisualize(c, _structure, options));
     return;
   } else if (selection.type == "RangeSelect" && range_fully_covers_parent(selection)) {
     const parent = selection.parent_diagram;
-    SetVisualForm(parent, _structure, options);
+    Revisualize(parent, _structure, options);
     return;
   } else if ("is_selection" in selection) {
     let diagrams = selection.get_selected_diagrams(selection);
-    diagrams.forEach((d) => SetVisualForm(d, _structure, options));
+    diagrams.forEach((d) => Revisualize(d, _structure, options));
     return;
   }
   let diagram = resolve_containers(selection);
@@ -59357,10 +59596,10 @@ function Style(thing, _properties = {}) {
   }
 }
 function Fragment(selection) {
-  const inverse = InvertSelection(selection);
+  const inverse = SpanSelection(InvertSelection(selection));
   Clump(inverse, { __collapse: true, __fragment: true });
 }
-function SpanSelection(selection) {
+function SpanSelection(selection, edge_select = false) {
   const original_selected_diagrams = selection.get_selected_diagrams(selection);
   if (original_selected_diagrams.length == 0) {
     console.warn("Merge received no elements.");
@@ -59371,7 +59610,9 @@ function SpanSelection(selection) {
   for (const [ancestor2, selected_diagrams] of all_ancestors) {
     if ("structure" in ancestor2 && ancestor2.structure == "Tree") {
       const paths = form_into_contiguous_paths(ancestor2, selected_diagrams);
-      const path_selections = paths.map((p) => create_tree_select(p.parent, p.path, ancestor2, Root()));
+      const path_selections = paths.map(
+        (p) => create_tree_select(p.parent, p.path, ancestor2, Root(), edge_select)
+      );
       if (path_selections.length == 1) {
         selections.push(path_selections[0]);
       } else {
@@ -59392,7 +59633,9 @@ function SpanSelection(selection) {
       });
       provenance.push(chunk_provenance);
     }
-    const contiguous_selections = chunks.map((c, i2) => create_range_select(ancestor2, c.chunk, c.layout, Root()));
+    const contiguous_selections = chunks.map(
+      (c, i2) => create_range_select(ancestor2, c.chunk, c.layout, Root(), edge_select)
+    );
     if (contiguous_selections.length == 1) {
       selections.push(contiguous_selections[0]);
     } else {
@@ -59406,40 +59649,6 @@ function SpanSelection(selection) {
   const union = UnionSelect(selections.map((s) => s));
   selections.push(union);
   return union;
-}
-function SplitSelection(selection) {
-  if (selection.type == "UnionSelect") {
-    if (selection.children.length == 1) {
-      return SplitSelection(selection.children[0]);
-    } else {
-      return UnionSelect(selection.children.map((c) => SplitSelection(c)));
-    }
-  }
-  if (selection.type == "RangeSelect") {
-    let parent = selection.parent_diagram;
-    const split = selection.range.map((c) => create_range_select(parent, [c], selection.layout, Root()));
-    return UnionSelect(split);
-  }
-  if (selection.type == "DataSelect") {
-    let data_diagram = selection.data_diagram;
-    if (data_diagram.type == "Container") {
-      data_diagram = data_diagram.children[0];
-    }
-    if ("structure" in data_diagram && data_diagram.structure == "Sequence") {
-      return UnionSelect(
-        data_diagram.data.__value.map(
-          (v) => DataSelect(v, { resolve_pointers: !data_diagram.should_not_resolve_pointers })
-        )
-      );
-    }
-    if ("structure" in data_diagram && data_diagram.structure == "Grid") {
-      let rows = data_diagram.array_data.__value;
-      rows = resolve_pointers(rows);
-      let items = rows.map((r) => r.__value).flat();
-      return UnionSelect(items.map((v) => DataSelect(v)));
-    }
-  }
-  throw new Error(`[SplitSelection] Unsupported selection ${selection.type}`);
 }
 function PartitionSelection(selection, n) {
   if (selection.type == "UnionSelect") {
@@ -59530,12 +59739,9 @@ function Clump(selection, _options = {}) {
     });
     let n_rows = parent.sub_container_matrix.length;
     let n_cols = parent.sub_container_matrix[0].length;
-    console.log(n_rows, n_cols);
-    console.log(indices);
     const locations = indices.map((i2) => {
       return [Math.floor(i2 / n_cols), i2 % n_cols];
     });
-    console.log("locs", locations);
     for (let i2 = 0; i2 < split.length; i2++) {
       const above = split.some((c, j) => locations[j][0] < locations[i2][0]);
       const below = split.some((c, j) => locations[j][0] > locations[i2][0]);
@@ -59551,7 +59757,7 @@ function Clump(selection, _options = {}) {
       if (left2 == false || locations[i2][1] == 0) {
         chunks[i2].inner_el.classList.add("d-subgrid-left");
       }
-      if (right2 == false || locations[i2][0] == n_cols - 1) {
+      if (right2 == false || locations[i2][1] == n_cols - 1) {
         chunks[i2].inner_el.classList.add("d-subgrid-right");
       }
     }
@@ -59567,12 +59773,12 @@ function Clump(selection, _options = {}) {
   update_constraints_diagram(selection);
   return chunk;
 }
-function EncircleBackground(selection, _options = {}) {
-  let options = resolve_options(_options, ["coords", "coords_range"]);
+function Encircle(selection, _properties = {}) {
+  let properties2 = resolve_options(_properties);
   if (selection.type == "UnionSelect") {
-    return create_group_diagram(selection.children.map((c) => EncircleBackground(c, options)));
+    return create_group_diagram(selection.children.map((c) => Encircle(c, _properties)));
   }
-  const encircle = create_encircle_highlight(selection);
+  const encircle = create_encircle_highlight(selection, properties2);
   return encircle;
 }
 function get_cleaned_data_from_selection(selection) {
@@ -59589,6 +59795,10 @@ function Label(selection, _text_fn, _options = {}) {
   let options = resolve_options(_options, ["coords", "coords_range"]);
   if (selection.type == "UnionSelect" && options.individual != true) {
     return create_group_diagram(selection.children.map((c) => Label(c, _text_fn, options)));
+  }
+  console.log("selection", selection);
+  if ((selection.type == "RangeSelect" || selection.type == "TreeNodeSelect") && selection.is_edge_select == true) {
+    return LabelEdge(selection, _text_fn, _options);
   }
   let text = "-";
   if (typeof _text_fn == "function") {
@@ -59701,7 +59911,6 @@ function LabelLocation(selection, arg1 = null, arg2 = null) {
   let options = resolve_options(_options, ["coordinates", "range"]);
   let coords_range = options.range ? resolve_pointers(options.range).__value : null;
   const cleaned_data = get_cleaned_data_from_selection(selection);
-  console.log("selection", selection);
   const ret = _text_fn(
     get_location_label(selection, options.coordinates, coords_range, Root(), options.remap_range ?? false),
     cleaned_data
@@ -59942,6 +60151,7 @@ function HandleMemberExpressionAssignment(obj2, prop2, value) {
     resolved.__value[prop2.__value] = AssignmentCopy(value);
     return;
   }
+  console.log("[HandleMemberExpressionAssignment]", obj2);
   throw new Error(`[HandleMemberExpressionAssignment] Cannot handle data of type ${obj2.type}`);
 }
 function HandleMemberExpression(obj, prop) {
@@ -62087,6 +62297,51 @@ function create_bbox_arrow(t1, t2, options = {}) {
     arrow_head_points: `0,${-3 * arrow_size_scale} ${6 * arrow_size_scale},0, 0,${3 * arrow_size_scale}`,
     arrow_head_transform: `translate(${ex},${ey}) rotate(${endAngleAsDegrees})`,
     path_points: `M${sx},${sy} Q${cx},${cy} ${ex},${ey}`
+  };
+}
+function setup_drag(el, on_begin_drag, on_drag, on_release_drag) {
+  let mx = 0;
+  let my = 0;
+  let is_dragging = false;
+  document.body.addEventListener("mousemove", (e2) => {
+    if (is_dragging) {
+      on_drag(e2.x - mx, e2.y - my);
+    }
+    mx = e2.x;
+    my = e2.y;
+  });
+  el.addEventListener("mousedown", (e2) => {
+    if (!is_dragging) {
+      is_dragging = true;
+      on_begin_drag();
+    }
+  });
+  document.body.addEventListener("mouseup", (e2) => {
+    if (is_dragging) {
+      is_dragging = false;
+      on_release_drag();
+    }
+  });
+}
+function create_bbox_arrow_alt(t1, t2, options = {}) {
+  const default_options = {
+    controlPointStretch: 50,
+    padEnd: 5,
+    padStart: 0,
+    allowedStartSides: ["top"],
+    allowedEndSides: ["top"]
+  };
+  const arrow = getBoxToBoxArrow$1(t1.x, t1.y, t1.width, t1.height, t2.x, t2.y, t2.width, t2.height, {
+    ...default_options,
+    ...options
+  });
+  const [sx, sy, c1x, c1y, c2x, c2y, ex, ey, ae, as] = arrow;
+  const endAngleAsDegrees = ae * (180 / Math.PI);
+  const arrow_size_scale = 1.5;
+  return {
+    arrow_head_points: `0,${-3 * arrow_size_scale} ${6 * arrow_size_scale},0, 0,${3 * arrow_size_scale}`,
+    arrow_head_transform: `translate(${ex},${ey}) rotate(${endAngleAsDegrees})`,
+    path_points: `M ${sx} ${sy} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${ex} ${ey}`
   };
 }
 function to_class_name(s) {
@@ -88892,6 +89147,21 @@ function create_cell(code2, move_code, parent) {
       }
     ]
   });
+  const scale_divider = create_el("div", "cell-divider", el);
+  setup_drag(
+    scale_divider,
+    () => {
+      scale_divider.classList.add("dragged");
+    },
+    (dx, dy) => {
+      const curr = parseInt(getComputedStyle(lhs).minWidth);
+      lhs.style.minWidth = `${curr + dx}px`;
+      lhs.style.maxWidth = `${curr + dx}px`;
+    },
+    () => {
+      scale_divider.classList.remove("dragged");
+    }
+  );
   const rhs = create_el("div", "cell-rhs", el);
   const diagram_view = create_el("div", "diagram-view", rhs);
   const diagram_inspector = create_el("div", "diagram-inspector", el);
@@ -88904,7 +89174,8 @@ function create_cell(code2, move_code, parent) {
     diagram_root: null,
     diagram_inspector,
     diagram_view,
-    error_el
+    error_el,
+    el
   };
   let typingTimer;
   code_editor.dom.addEventListener("change", (_) => {
@@ -88964,40 +89235,27 @@ function getErrorMessage(error) {
   if (error instanceof Error) return error.message;
   return String(error);
 }
-const DIAGRAMS = ["d1", "d2", "d3", "d4", "d5", "d11", "d12", "d16", "d99", "d100"];
-const SAMPLE_CODE_FILES = [
-  "./00_scratch.js",
-  "./01_array.js",
-  "./02_matrix.js",
-  "./03_table.js",
-  "./04_nd_tree.js",
-  "./05_linked_list.js",
-  "./06_graph.js"
-];
-const SAMPLE_MOVE_FILES = [
-  "./00_scratch_moves.js",
-  "./01_array_moves.js",
-  "./02_matrix_moves.js",
-  "./03_table_moves.js",
-  "./04_nd_tree_moves.js",
-  "./05_linked_list_moves.js",
-  "./06_graph_moves.js"
-];
-const SELECTED_FILE = 0;
-let CURR = 1;
-let PAGES_PER = 80;
-let TOTAL = 80;
 let USE_CACHE = true;
 const all_diagrams = document.querySelector(".all-diagrams");
 async function main() {
   State$1.solver = new Solver();
-  update_diagrams();
+  show_all_diagrams();
 }
-async function update_diagrams() {
+async function study_diagrams() {
+}
+async function study_loop() {
+  if (document.activeElement != document.body) {
+    document.body.querySelectorAll(".study-annotation").forEach((a) => a.style.opacity = "0.3");
+  } else {
+    document.body.querySelectorAll(".study-annotation").forEach((a) => a.style.opacity = "1");
+  }
+  requestAnimationFrame(study_loop);
+}
+async function show_all_diagrams() {
   all_diagrams.innerHTML = "";
   const cache_raw = await (await fetch("cache.json")).json();
   create_el("hr", [], all_diagrams);
-  for (let i2 = CURR; i2 < CURR + PAGES_PER; i2++) {
+  for (let i2 = 1; i2 <= 80; i2++) {
     const code_file = `./diagrams/d${i2}.js`;
     const move_file = `./diagrams/d${i2}_moves.js`;
     const section = create_el("section", [], all_diagrams);
@@ -89011,11 +89269,22 @@ async function update_diagrams() {
     create_el("hr", ["hr-diagram"], section);
   }
 }
+async function count_lines() {
+  let lines_sum = 0;
+  for (let i2 = 1; i2 <= 80; i2++) {
+    const move_file = `./diagrams/d${i2}_moves.js`;
+    const moves_raw = await (await fetch(move_file)).text();
+    lines_sum += moves_raw.split("\n").filter((s) => s.trim() != "").length;
+  }
+  console.log("Average lines: ", lines_sum / 80);
+}
 main();
 async function init_cell(id2, code_file, move_file) {
   const revis_sequences = document.querySelector(id2);
   const code_raw = await (await fetch(code_file)).text();
   const moves_raw = await (await fetch(move_file)).text();
+  const annotations = revis_sequences.querySelectorAll(".study-annotation");
   const cell = create_cell(code_raw, moves_raw, revis_sequences);
+  annotations.forEach((a) => cell.el.append(a));
   run_cell(cell);
 }

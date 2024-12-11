@@ -1,2 +1,5 @@
-let n = 12
-let L = [...new Array(n)].map((_, i) => i)
+let T = {
+    value: 5,
+    right: { value: 5 },
+    left: { value: 5 },
+}

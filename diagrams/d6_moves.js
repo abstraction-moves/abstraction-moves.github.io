@@ -2,7 +2,7 @@ let s = null
 Display(truncated_record)
 
 s = Select(truncated_record)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
+Revisualize(s, 'Sequence', { style: 'Space Separated' })
 
 s = SpanSelection(Select(truncated_record.slice(0, 11)))
 Clump(s, { scale: 0.2 })
@@ -24,4 +24,4 @@ s = SpanSelection(s.slice(1))
 
 Label(s, 'n text bytes', { push_layout: false })
 
-Remove(s)
+Clear(s)

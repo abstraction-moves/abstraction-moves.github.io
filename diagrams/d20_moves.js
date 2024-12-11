@@ -24,13 +24,13 @@ Display(rows_flat)
 Display(cols)
 
 s = Select(data)
-SetVisualForm(s, 'Grid')
+Revisualize(s, 'Grid')
 
 s = Select(cols)
-SetVisualForm(s, 'Sequence', { style: 'Space Separated' })
+Revisualize(s, 'Sequence', { style: 'Space Separated' })
 
 s = Select(rows_flat, ...cols)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
 s = Select(data.slice(3))
 s = SpanSelection(s)
@@ -46,4 +46,4 @@ Label(s, 'row-major storage', { placement: 'top' })
 s = Select(cols)
 Label(s, 'column-major storage', { placement: 'top' })
 
-Remove(s)
+Clear(s)

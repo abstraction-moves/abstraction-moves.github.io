@@ -2,12 +2,12 @@ let s = null
 Display(L)
 
 s = Select(L)
-SetVisualForm(s, 'Graph')
+Revisualize(s, 'Graph')
 
 s = SelectNodes(L)
-SetVisualForm(s, 'Sequence', { style: 'Blocks' })
+Revisualize(s, 'Sequence', { style: 'Blocks' })
 
-s = SplitSelection(s)
+s = Select(L.vertices)
 LabelLocation(s, { placement: 'top', show_braces: false })
 Style(s, { background: '#fee4b3' })
 
@@ -22,5 +22,5 @@ for (let i = 0; i < L.vertices.length; i++) {
     if (mid > 0) Label(s2[Math.floor(n / 2) - 1], 'q', { placement: 'bottom' })
 }
 
-Remove(s)
-Remove(s2)
+Clear(s)
+Clear(s2)

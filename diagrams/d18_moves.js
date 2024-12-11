@@ -17,28 +17,44 @@ let s = null
 Display(M)
 
 s = Select(M)
-SetVisualForm(s, 'Grid', { padding: [0, 10] })
+Revisualize(s, 'Grid')
 
 s = Select(main_diag)
 Hide(s)
-LabelLocation(s, (s) => `di(${s})`, {
+LabelLocation(s, (s) => `dia(${s})`, {
     coordinates: main_diag,
     range: [0, Var('n')],
 })
 
 s = Select(sub_diag)
 Hide(s)
-LabelLocation(s, (s) => `su(${s})`, {
+LabelLocation(s, (s) => `sub(${s})`, {
     coordinates: sub_diag,
     range: [0, Var('n')],
 })
 
 s = Select(sup_diag)
 Hide(s)
-LabelLocation(s, (s) => `su(${s})`, {
+LabelLocation(s, (s) => `sup(${s})`, {
     coordinates: sup_diag,
     range: [0, Var('n')],
 })
 
-s = SpanSelection(Select(M.slice(2, n - 1)))
+s = InvertSelection(Select(sup_diag, sub_diag, main_diag))
+Hide(s)
+Label(s, '0')
+
+s = SelectRows(M, 2, n - 1)
+s = SpanSelection(s)
 Abbreviate(s)
+
+let n2 = Math.floor(n / 2)
+for (let i = 0; i <= n; i++) {
+    s = Select(M[i].slice(1, n2))
+    Abbreviate(s)
+
+    s = Select(M[i].slice(n2 + 2, -1))
+    Abbreviate(s)
+}
+
+Clear(s)

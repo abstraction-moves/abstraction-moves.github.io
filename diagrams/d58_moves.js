@@ -2,7 +2,7 @@ let s = null
 Display(L)
 
 s = Select(L)
-SetVisualForm(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
+Revisualize(s, 'Sequence', { style: 'Blocks', orientation: 'Vertical' })
 
 s = Select(...L)
 s = SpanSelection(s)

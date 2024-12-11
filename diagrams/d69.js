@@ -1,7 +1,7 @@
 let n1 = 229
 let n2 = 64
 
-let result = 229 % 64
+let result = n1 % n2
 
 let b1 = to_binary_array(n1)
 let b2 = to_binary_array(n2)
