@@ -1,11 +1,19 @@
-Display(T)
-let s = Select(T)
+Display(L)
 
-Revisualize(s, 'Tree', { horizontal_margin: 35, vertical_margin: 35 })
+let s = Select(L)
+Revisualize(s, 'Sequence', {
+  style: 'Blocks'
+})
 
-s = SelectNodes(T)
+s = PartitionSelection(s, 3)
 Clump(s)
 
-s = Select(T, T.right)
-s = SpanSelection(s)
-Encircle(s, { background: 'lightyellow' })
+LabelLocation(s, {
+  coordinates: L,
+  range: [0, Var('n')],
+  remap_range: true
+})
+
+for (let i=0; i<s.length-1; i++) {
+  Connect(s[i], s[i+1])
+}

@@ -374,25 +374,31 @@
 .d-range-label.d-align-right {
     justify-content: end;
     text-align: end;
-}.d-value-selection, .d-contiguous-selection, .d-tree-selection {
+}.d-value-selection,
+.d-contiguous-selection,
+.d-tree-selection {
     position: absolute;
     background-color: rgba(113, 37, 255, 0.2);
     mix-blend-mode: hard-light;
     z-index: 5;
-    transform: scale(1);
-    transform-origin: center;
-    transition: 0.2s;
-    animation: selection-scale 1.5s alternate-reverse ease-in-out;
-    animation-iteration-count: infinite;
-    border-radius: 5px;
+    /* transform: scale(1);
+    transform-origin: center; */
+    /* transition: 5s; */
+    /* animation: selection-scale 1.5s alternate-reverse ease-in-out;
+    animation-iteration-count: infinite; */
+    border-radius: 0px;
 }
 
+.d-value-selection,
+.d-contiguous-selection {
+    opacity: 0;
+}
 
 .d-tree-selection-edge {
     stroke-width: 10px !important;
     stroke-linecap: round;
     opacity: 1;
-    z-index: 5
+    z-index: 5;
 }
 
 /* @keyframes selection-scale {
@@ -403,7 +409,8 @@
     100% {
         transform: scale(2);
     }
-} */.d-chunk {
+} */
+.d-chunk {
     position: absolute;
 }
 
@@ -657,24 +664,35 @@
 
 .di-node:not(.di-node-data) {
     color: black;
-}.diagram-svg, .diagram-svg-top {
+}.diagram-svg,
+.diagram-svg-top,
+.diagram-svg-selections {
     width: 100%;
     height: 100%;
     overflow: initial;
     position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
-.diagram-svg path:not(.d-encircle-background), .diagram-svg-top path:not(.d-encircle-background) {
+.diagram-svg-selections > .poly-selection {
+    stroke-width: 0px;
+    transition-duration: 0.5s;
+    transition-property: fill;
+}
+
+.diagram-svg path:not(.d-encircle-background),
+.diagram-svg-top path:not(.d-encircle-background) {
     stroke: #000000;
     stroke-width: 1px;
     fill: none;
 }
 
-.diagram-svg-top {
+.diagram-svg-top,
+.diagram-svg-selections {
     z-index: 100;
     user-select: none;
     pointer-events: none;
-
 }
 
 .cell {
@@ -715,16 +733,16 @@
 .cell-divider {
     width: 10px;
     cursor: ew-resize;
-    background: #e5e3db;
+    /* background: #e5e3db; */
     height: var(--pane-height);
-  }
+}
 
 .cell-divider:hover {
-    background: rgba(0,0,0,0.1)
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .cell-divider.dragged {
-    background: rgba(0,0,0,0.2)
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .cell-container {
@@ -742,7 +760,7 @@
 .cell-rhs {
     width: 100%;
     display: flex;
-    border-left: 1px solid #00000045;
+    /* border-left: 1px solid #00000045; */
     flex-direction: column;
 
     position: relative;
@@ -750,7 +768,6 @@
     font-size: 1em;
 
     font-family: var(--monospace-font) !important;
-    overflow: scroll;
 
     line-height: 1;
 }
@@ -758,24 +775,20 @@
 .diagram-view {
     width: 100%;
     position: relative;
-    overflow: scroll;
     z-index: 1;
 
     height: 100%;
-    margin-left: 20px;
-  margin-top: 20px;
-  overflow: visible;
-
+    /* margin-left: 20px; */
+    margin-top: 20px;
+    overflow: auto;
 }
 
 .diagram-inspector {
-
     overflow: auto;
 
     flex-direction: column;
 
     padding: 10px;
-    overflow: scroll;
 
     position: absolute;
     left: 1353px;
@@ -796,11 +809,12 @@
     bottom: -52px;
     opacity: 0.5;
     font-size: 0.95em;
+    display: none;
 }
 
 .cell-code-toggle {
     position: absolute;
-    left: -210px;
+    left: -150px;
     top: 5px;
     flex-direction: column;
     display: flex;
@@ -861,7 +875,7 @@
     --sans-serif-font: 'Source Sans 3';
     --serif-font: 'Source Serif 4';
     /* --monospace-font: monospace; */
-    --pane-height: 800px;
+    --pane-height: 700px;
 }
 /* https://niklasfasching.de/posts/just-enough-css/ */
 html {
@@ -870,9 +884,9 @@ html {
     font: 100%/1.5 sans-serif;
     word-wrap: break-word;
     margin: 0 auto;
-    padding: 1.5em;
+    padding: 3em;
     font-family: var(--sans-serif-font);
-    background: #f6f5f0;
+    background: white;
     /* filter: invert(1) hue-rotate(180deg) contrast(0.8); */
     /* background: #ededed; */
 }
@@ -906,7 +920,7 @@ p {
     margin-right: 20px;
     border-right: 1px solid #00000054;
     padding-right: 20px;
-  }
+}
 .page-switch-container {
     margin-left: 10px;
     display: flex;

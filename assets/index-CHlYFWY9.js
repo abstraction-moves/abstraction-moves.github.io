@@ -56196,9 +56196,11 @@ function create_diagram(el_class, options) {
   const el = create_el("div", el_class);
   const [left2, top2] = [create_int(), create_int()];
   const [width, height] = [create_int(), create_int()];
+  const id2 = get_tag_id();
+  el.setAttribute("data-id", id2);
   return {
     kind: "Diagram",
-    id: get_tag_id(),
+    id: id2,
     el,
     children: options.children ?? [],
     left: left2,
@@ -56732,7 +56734,7 @@ function create_object_blocks(object_data, sub_diagrams, _options = {}) {
     if (default_update != null) {
       default_update(diagram2);
     }
-    labels.forEach((l) => l.remove());
+    labels.forEach((l2) => l2.remove());
     labels = [];
     if (show_labels) {
       const kvs = data2.__value;
@@ -57203,7 +57205,7 @@ function create_data_connection(_from, _to, options = {}) {
     from: _from,
     to: _to,
     directed: options.directed ?? true,
-    flip: options.flip ?? false,
+    flip: options.flip ?? true,
     straights: options.straights ?? true,
     from_pivot: options.from_pivot ?? "any",
     to_pivot: options.to_pivot ?? "any",
@@ -57922,6 +57924,7 @@ function create_data_select(_data, _data_diagram, root) {
     on_data_replace
   };
   select.el.style.backgroundColor = get_selection_color();
+  select.el.setAttribute("data-type", "selection");
   function on_data_replace(selection, old_diagram, new_diagram) {
     selection.data_diagram = new_diagram;
     update_constraints_diagram(selection);
@@ -57975,6 +57978,7 @@ function create_range_select(_parent_diagram, _chunk, _layout, root, edge_select
     on_parent_replace
   };
   select.el.style.backgroundColor = get_selection_color();
+  select.el.setAttribute("data-type", "selection");
   function on_parent_replace(selection, parent, new_parent) {
     const chunk_indices = selection.range.map((c) => parent.children.indexOf(c.child));
     const new_chunks = selection.range.map((c, i2) => ({
@@ -58085,6 +58089,7 @@ function create_tree_select(_start, _path, _ancestor, root, edge_select = false)
     is_edge_select: edge_select
   };
   _select.el.style.backgroundColor = get_selection_color();
+  _select.el.setAttribute("data-type", "selection");
   function get_selected_diagrams_helper(node, path, ancestor2) {
     const selections = ["is_chunk" in node ? node.node : node.container];
     for (const p of path) {
@@ -58203,6 +58208,7 @@ function create_tree_subtree_select(_parent, _ancestor, root) {
     parent: _parent
   };
   select.el.style.backgroundColor = get_selection_color();
+  select.el.setAttribute("data-type", "selection");
   function get_selected_diagrams(select2) {
     assert(select2.type == "TreeSubTreeSelect", "Invalid update type");
     const parent_diagram = get_diagram_of_node(select2.parent);
@@ -59092,7 +59098,7 @@ function resolve_pointer_from_id(id2) {
 function Connect(s1, s2, _options = {}) {
   const options = resolve_options(_options);
   options.mapping = options.mapping ?? "one-to-one";
-  options.flip = options.flip == null ? false : options.flip;
+  options.flip = options.flip == null ? true : options.flip;
   options.straights = options.straights == null ? true : options.straights;
   const connections = [];
   let selected_1 = s1.get_selected_diagrams(s1);
@@ -61745,6 +61751,13 @@ function create_path_element(classes2 = [], parent) {
   }
   return pathEl;
 }
+function lerp(a, b, t2, threshold = 0) {
+  if (Math.abs(a - b) < threshold) return b;
+  return a * (1 - t2) + b * t2;
+}
+function lerp2d(p1, p2, t2) {
+  return { x: lerp(p1.x, p2.x, t2), y: lerp(p1.y, p2.y, t2) };
+}
 function are_selections_equal(s1, s2) {
   const s1_diagrams = s1.get_selected_diagrams(s1);
   const s2_diagrams = s2.get_selected_diagrams(s2);
@@ -63020,8 +63033,8 @@ function update_diagram(diagram) {
   }
   if (diagram.type == "Root") {
     State$1.container.innerHTML = "";
-    const svg2 = create_svg_element("diagram-svg", State$1.container);
-    const svg_top = create_svg_element("diagram-svg-top", State$1.container);
+    create_svg_element("diagram-svg", State$1.container);
+    create_svg_element("diagram-svg-top", State$1.container);
   }
   if (style) {
     State$1.container.append(diagram.el);
@@ -89106,6 +89119,7 @@ function get_children(thing) {
 function get_id(thing) {
   return `${thing.id}#(${thing.provenance.join(", ")})`;
 }
+let CellSelectionAnimations = [];
 function create_cell(code2, move_code, parent) {
   const el = create_el("div", "cell", parent);
   const lhs = create_el("div", "cell-lhs", el);
@@ -89119,7 +89133,7 @@ function create_cell(code2, move_code, parent) {
   const toggle_code = create_el("div", "cell-code-toggle-code", code_toggle_container);
   const toggle_diagram = create_el("div", "cell-code-toggle-diagram", code_toggle_container);
   toggle_code.innerText = "Source Code";
-  toggle_diagram.innerText = "Abstraction Moves";
+  toggle_diagram.innerText = "Chisel";
   toggle_code.classList.add("active");
   toggle_diagram.addEventListener("click", () => {
     if (toggle_diagram.classList.contains("active")) {
@@ -89165,6 +89179,7 @@ function create_cell(code2, move_code, parent) {
   const rhs = create_el("div", "cell-rhs", el);
   const diagram_view = create_el("div", "diagram-view", rhs);
   const diagram_inspector = create_el("div", "diagram-inspector", el);
+  const selection_svg = create_svg_element("diagram-svg-selections", diagram_view);
   const error_el = create_el("div", "cell-error", el);
   const cell = {
     code: code2,
@@ -89175,7 +89190,8 @@ function create_cell(code2, move_code, parent) {
     diagram_inspector,
     diagram_view,
     error_el,
-    el
+    el,
+    selection_svg
   };
   let typingTimer;
   code_editor.dom.addEventListener("change", (_) => {
@@ -89192,15 +89208,28 @@ function create_cell(code2, move_code, parent) {
 }
 async function run_cell(cell, cached_diagram = null) {
   State$1.container = cell.diagram_view;
+  const diagram_svg_selections = cell.diagram_view.querySelector(".diagram-svg-selections");
+  [...cell.selection_svg.children].forEach((p) => p.remove());
+  CellSelectionAnimations = [];
+  const SEL_PADDING = 3;
+  const prev_selections = [...cell.diagram_view.querySelectorAll(`div[data-type="selection"]`)].map((el) => {
+    const bbox = el.getBoundingClientRect();
+    const parent_bbox = cell.diagram_view.getBoundingClientRect();
+    return {
+      id: el.getAttribute("id"),
+      x: bbox.x - parent_bbox.x - SEL_PADDING,
+      y: bbox.y - parent_bbox.y - SEL_PADDING,
+      width: bbox.width + SEL_PADDING * 2,
+      height: bbox.height + SEL_PADDING * 2,
+      color: el.style.backgroundColor
+    };
+  });
   cell.error_el.innerText = "";
-  cell.diagram_view.innerHTML = "";
   if (cached_diagram != null) {
     cell.diagram_view.innerHTML = cached_diagram;
     cell.error_el.innerText = `Loaded from cache.`;
     return;
   }
-  const svg2 = create_svg_element("diagram-svg", cell.diagram_view);
-  const svg_top = create_svg_element("diagram-svg-top", cell.diagram_view);
   State$1.solver = new Solver();
   State$1.post_constraints = [];
   let time2 = performance.now();
@@ -89229,12 +89258,81 @@ async function run_cell(cell, cached_diagram = null) {
   update_diagram(diagram_root);
   State$1.solver.updateVariables();
   update_diagram(diagram_root);
+  cell.diagram_view.append(cell.selection_svg);
+  const new_selections = [...cell.diagram_view.querySelectorAll(`div[data-type="selection"]`)];
+  new_selections.forEach((el, i2) => {
+    const polygon = create_polygon_element("poly-selection", diagram_svg_selections);
+    if (prev_selections.length > 0) {
+      const prev = prev_selections[i2 % prev_selections.length];
+      const points = [
+        { x: prev.x, y: prev.y },
+        { x: prev.x + prev.width, y: prev.y },
+        { x: prev.x + prev.width, y: prev.y + prev.height },
+        { x: prev.x, y: prev.y + prev.height }
+      ];
+      polygon.setAttribute("points", `${points.map((pt) => `${pt.x},${pt.y}`).join(" ")}`);
+      const bbox = el.getBoundingClientRect();
+      const parent_bbox = cell.diagram_view.getBoundingClientRect();
+      const x = bbox.x - parent_bbox.x - SEL_PADDING;
+      const y = bbox.y - parent_bbox.y - SEL_PADDING;
+      const width = bbox.width + SEL_PADDING * 2;
+      const height = bbox.height + SEL_PADDING * 2;
+      CellSelectionAnimations.push({
+        polygon,
+        target: [
+          { x, y },
+          { x: x + width, y },
+          { x: x + width, y: y + height },
+          { x, y: y + height }
+        ]
+      });
+      polygon.style.fill = prev.color;
+      polygon.style.transitionDuration = "0s";
+      setTimeout(() => {
+        polygon.style.transitionDuration = "0.5s";
+        polygon.style.fill = `${el.style.backgroundColor}`;
+      });
+    } else {
+      const bbox = el.getBoundingClientRect();
+      const parent_bbox = cell.diagram_view.getBoundingClientRect();
+      const x = bbox.x - parent_bbox.x - SEL_PADDING;
+      const y = bbox.y - parent_bbox.y - SEL_PADDING;
+      const width = bbox.width + SEL_PADDING * 2;
+      const height = bbox.height + SEL_PADDING * 2;
+      const points = [
+        { x, y },
+        { x: x + width, y },
+        { x: x + width, y: y + height },
+        { x, y: y + height }
+      ];
+      polygon.style.transitionDuration = "0s";
+      polygon.style.fill = `${el.style.backgroundColor}`;
+      polygon.setAttribute("points", `${points.map((pt) => `${pt.x},${pt.y}`).join(" ")}`);
+      setTimeout(() => {
+        polygon.style.transitionDuration = "0.5s";
+      });
+    }
+  });
   cell.error_el.innerText = `${performance.now() - time2}ms`;
 }
 function getErrorMessage(error) {
   if (error instanceof Error) return error.message;
   return String(error);
 }
+function loop_selections() {
+  CellSelectionAnimations.forEach((sel) => {
+    const speed = 0.5;
+    const delta = 0.02;
+    const points = [...sel.target];
+    points[0] = lerp2d(sel.polygon.points[0], points[0], speed * 0.2);
+    points[1] = lerp2d(sel.polygon.points[1], points[1], speed * (0.2 + delta));
+    points[2] = lerp2d(sel.polygon.points[2], points[2], speed * (0.2 + 2 * delta));
+    points[3] = lerp2d(sel.polygon.points[3], points[3], speed * (0.2 + 3 * delta));
+    sel.polygon.setAttribute("points", `${points.map((pt) => `${pt.x},${pt.y}`).join(" ")}`);
+  });
+  return requestAnimationFrame(loop_selections);
+}
+loop_selections();
 let USE_CACHE = true;
 const all_diagrams = document.querySelector(".all-diagrams");
 async function main() {

@@ -1,5 +1,6 @@
-let T = {
-    value: 5,
-    right: { value: 5 },
-    left: { value: 5 },
+let n = 6
+let L = []
+
+for (let i = 0; i < n; i++) {
+    L.push(i)
 }
